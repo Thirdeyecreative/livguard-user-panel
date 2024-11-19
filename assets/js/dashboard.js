@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function fetchData(deviceId) {
     // console.log({ deviceId, authToken });
     fetch(
-      `https://dms.meshaenergy.com/apis/dashboard/primary-data/${deviceId}/${authToken}`,
+      `https://lgdms.livguard.com/dashboard/primary-data/${deviceId}/${authToken}`,
       {
         method: "GET",
       }
@@ -279,7 +279,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // exportDataBtn.addEventListener("click", function () {
         //   // console.log("clicked");
         //   const link = document.getElementById("downloadLink");
-        //   link.href = `https://dms.meshaenergy.com/apis/download/csv/today/${authToken}`;
+        //   link.href = `https://lgdms.livguard.com/download/csv/today/${authToken}`;
         //   link.click();
         // });
         // export data
@@ -377,7 +377,7 @@ function formatDate(dateString) {
 
 function fetchDeviceIds(customerId, authToken) {
   fetch(
-    `https://dms.meshaenergy.com/apis/devices/all/${customerId}/${authToken}`,
+    `https://lgdms.livguard.com/devices/all/${customerId}/${authToken}`,
     {
       method: "GET",
     }
@@ -410,7 +410,7 @@ function fetchDistance(deviceId, authToken) {
   }*/
   // console.log(deviceId, authToken);
   fetch(
-    `https://dms.meshaenergy.com/apis/distance-travelled/${deviceId}/${authToken}`,
+    `https://lgdms.livguard.com/distance-travelled/${deviceId}/${authToken}`,
     {
       method: "GET",
     }
@@ -437,7 +437,7 @@ function chargeDischargeDisplay(deviceId, authToken) {
    tableBody.innerHTML = '';
     
   fetch(
-    `https://dms.meshaenergy.com/apis/dashboard/charge_discharge/csv/date-range/${deviceId}/${authToken}`,
+    `https://lgdms.livguard.com/dashboard/charge_discharge/csv/date-range/${deviceId}/${authToken}`,
     {
       method: "GET",
     }

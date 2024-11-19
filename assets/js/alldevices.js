@@ -110,7 +110,7 @@ function setThreshold(rowData) {
   console.log(rowData);
   // const customerId = rowData.customerId;
   const authToken = localStorage.getItem("authToken");
-  const voltageApiUrl = `https://dms.meshaenergy.com/apis/voltage-settings/${authToken}`;
+  const voltageApiUrl = `https://lgdms.livguard.com/voltage-settings/${authToken}`;
 
   // Clear all fields initially
   voltageGroups.forEach((group) => {
@@ -165,7 +165,7 @@ const handleVoltageSubmit = async (event) => {
   if (validateVoltageInputs()) {
     try {
       const authToken = localStorage.getItem("authToken");
-      const apiUrl = "https://dms.meshaenergy.com/apis/voltage-settings";
+      const apiUrl = "https://lgdms.livguard.com/voltage-settings";
 
       const formData = new FormData();
       formData.append("v1L", voltageData.v1_low);
@@ -255,7 +255,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   async function fetchData() {
     try {
       const response = await fetch(
-        `https://dms.meshaenergy.com/apis/alldevices/primary-data/${customerId}/${authToken}`,
+        `https://lgdms.livguard.com/alldevices/primary-data/${customerId}/${authToken}`,
         {
           method: "GET",
         }
@@ -310,7 +310,7 @@ document.addEventListener("DOMContentLoaded", async function () {
           </td>
           <td>
             <!--<button class="icon_button"><i style="color: #626C70;" class="bi bi-eye-fill"></i></button>-->
-            <a href="https://dms.meshaenergy.com/apis/download/csv/today/${
+            <a href="https://lgdms.livguard.com/download/csv/today/${
               row.device_id
             }/${authToken}" download><button class="icon_button"><i style="color: #626C70;" class="bi bi-download"></i></button></a>
           </td>
@@ -411,7 +411,7 @@ function fetchDistance(deviceId, authToken) {
   }
   // console.log(deviceId, authToken);
   fetch(
-    `https://dms.meshaenergy.com/apis/distance-travelled/${deviceId}/${authToken}`,
+    `https://lgdms.livguard.com/distance-travelled/${deviceId}/${authToken}`,
     {
       method: "GET",
     }
@@ -429,7 +429,7 @@ function fetchDistance(deviceId, authToken) {
 
 function fetchDeviceIds(customerId, authToken) {
   fetch(
-    `https://dms.meshaenergy.com/apis/devices/all/${customerId}/${authToken}`,
+    `https://lgdms.livguard.com/devices/all/${customerId}/${authToken}`,
     {
       method: "GET",
     }

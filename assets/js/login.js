@@ -8,7 +8,7 @@ document
     formData.append("password", document.getElementById("inputPassword").value);
     console.log({ formData });
 
-    fetch("https://dms.meshaenergy.com/apis/appusers", {
+    fetch("https://lgdms.livguard.com/appusers", {
       method: "POST",
       body: formData,
     })
