@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mesha Energy - DMS Diagnostics Tool</title>
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
+
+    <link href="assets/owl/assets/owl.carousel.min.css" rel="stylesheet" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://code.jquery.com/ui/1.13.3/themes/base/jquery-ui.css"
+    />
+
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/jquery-3.7.0.js"></script>
+    <script src="assets/js/jquery-3.7.0.js"></script>
+    <script src="assets/owl/owl.carousel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
+    ></script>
+    <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
+
+    <style>
+      body {
+        background-color: #f8f9fa;
+        /* background-color: white; */
+      }
+
+      /* dashboard */
+
+      /*
+ * Sidebar
+ */
+
+      /*
+ * Navbar
+ */
+
+      .navbar-brand {
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+        background-color: rgba(0, 0, 0, 0.25);
+        box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.25);
+      }
+
+      .navbar .form-control {
+        padding: 0.75rem 1rem;
+      }
+
+      /* dashboard */
+
+      /* dashboard-sidebar */
+
+      .dropdown-toggle {
+        outline: 0;
+      }
+
+      .btn-toggle {
+        padding: 0.25rem 0.5rem;
+        font-weight: 600;
+        color: var(--bs-emphasis-color);
+        background-color: transparent;
+      }
+
+      .btn-toggle:hover,
+      .btn-toggle:focus {
+        color: rgba(var(--bs-emphasis-color-rgb), 0.85);
+        background-color: var(--bs-tertiary-bg);
+      }
+
+      .btn-toggle::before {
+        width: 1.25em;
+        line-height: 0;
+        content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+        transition: transform 0.35s ease;
+        transform-origin: 0.5em 50%;
+      }
+
+      [data-bs-theme="dark"] .btn-toggle::before {
+        content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%28255,255,255,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+      }
+
+      .btn-toggle[aria-expanded="true"] {
+        color: rgba(var(--bs-emphasis-color-rgb), 0.85);
+      }
+
+      .btn-toggle[aria-expanded="true"]::before {
+        transform: rotate(90deg);
+      }
+
+      .btn-toggle-nav a {
+        padding: 0.1875rem 0.5rem;
+        margin-top: 0.125rem;
+        margin-left: 1.25rem;
+      }
+
+      .btn-toggle-nav a:hover,
+      .btn-toggle-nav a:focus {
+        background-color: var(--bs-tertiary-bg);
+      }
+
+      .scrollarea {
+        overflow-y: auto;
+      }
+
+      .tbl_th_by {
+        color: #4a5154;
+        opacity: 50%;
+        border: none;
+      }
+
+      .btn_local_style {
+        border: 2px solid #00b562;
+        color: #00b562;
+        padding: 1px, 3px;
+      }
+
+      .btn_local_style:hover {
+        background-color: #ecfff6;
+        border: 2px solid #00b562;
+      }
+
+      .color_box {
+        /* padding-left: 2px; */
+        /* padding: 2px; */
+        height: 25px;
+        border-radius: 4px;
+        color: white;
+        display: flex;
+        justify-content: center;
+        /* align-items: center; */
+      }
+
+      .table_tal {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+      }
+
+      .round_container {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+      }
+
+      .date_picker_button {
+        background-color: #00b562;
+        color: white;
+      }
+
+      .date_picker_button:hover {
+        background-color: #ecfff6;
+        border: 2px solid #00b562;
+        color: #00b562;
+      }
+
+      .icon_button {
+        width: 30px;
+        height: 30px;
+        margin: 0px;
+        padding: 4px;
+        border: 1px solid #626c70;
+        border-radius: 50%;
+      }
+
+      /* dashboard-sidebar */
+
+      /* new-dashboard */
+      /* .bi {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+} */
+
+      /*
+ * Sidebar
+ */
+
+      @media (min-width: 768px) {
+        .sidebar .offcanvas-lg {
+          position: -webkit-sticky;
+          position: sticky;
+          top: 48px;
+        }
+
+        .navbar-search {
+          display: block;
+        }
+      }
+
+      .sidebar-heading {
+        font-size: 0.75rem;
+      }
+
+      /*
+ * Navbar
+ */
+
+      .navbar-brand {
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+        background-color: rgba(0, 0, 0, 0.25);
+        box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.25);
+      }
+
+      .navbar .form-control {
+        padding: 0.75rem 1rem;
+      }
+
+      /* new-dashboard */
+
+      /***upload***/
+      .upload-container {
+        max-width: 600px;
+        margin: auto;
+      }
+
+      .image-preview {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .image-preview img {
+        max-width: 150px;
+        max-height: 150px;
+        position: relative;
+      }
+
+      .image-preview img:hover .delete-icon {
+        display: block;
+      }
+
+      .delete-icon {
+        display: none;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        padding: 5px;
+        cursor: pointer;
+      }
+
+      #drop-area {
+        border: 2px dashed #ccc;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      #drop-area.highlight {
+        background-color: #f0f0f0;
+      }
+
+      #fileInput {
+        display: none;
+      }
+      /* modal styling start */
+      .modalInputs,
+      .thresholdModalInputs {
+        /* border: 1px solid black; */
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 0 16px;
+      }
+      .modalInput {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .modalInput input:focus,
+      .thresholdModalInput input:focus {
+        outline: none !important;
+        box-shadow: none !important;
+        border: 1px solid #0d5e36;
+      }
+      .modalInput select:focus,
+      .thresholdModalInput select:focus {
+        outline: none !important;
+        box-shadow: none !important;
+        border: 1px solid #0d5e36;
+      }
+      .modal-footer,
+      .thresholdModalFooter {
+        display: flex !important;
+        justify-content: space-between !important;
+        /* border: 1px solid black !important; */
+        padding: 16px 28px !important;
+      }
+      .modal-footer button,
+      .thresholdModalFooter button {
+        min-width: 100px !important;
+      }
+
+      .thresholdModalInputContainer {
+        display: flex;
+        flex-direction: column;
+      }
+      .thresholdModalInputGroup {
+        display: flex;
+        gap: 16px;
+      }
+
+      /* modal styling end */
+      
+    </style>
+  </head>
+
+  <body>
+    <!-- dashoard -->
+
+    <header
+      class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow d-block d-lg-none"
+      data-bs-theme="dark"
+    >
+      <a
+        class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white"
+        href="#"
+        >Company name</a
+      >
+
+      <!-- <ul class="navbar-nav flex-row d-md-none">
+        <li class="nav-item text-nowrap">
+          <button
+            class="nav-link px-3 text-white"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSearch"
+            aria-controls="navbarSearch"
+            aria-expanded="false"
+            aria-label="Toggle search"
+          >
+            <svg class="bi"><use xlink:href="#search" /></svg>
+          </button>
+        </li>
+        <li class="nav-item text-nowrap">
+          <button
+            class="nav-link px-3 text-white"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#sidebarMenu"
+            aria-controls="sidebarMenu"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <i class="bi bi-distribute-vertical"></i>
+          </button>
+        </li>
+      </ul> -->
+
+      <!-- <div id="navbarSearch" class="navbar-search w-100 collapse">
+        <input
+          class="form-control w-100 rounded-0 border-0"
+          type="text"
+          placeholder="Search"
+          aria-label="Search"
+        />
+      </div> -->
+    </header>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div
+          class="sidebar border border-right col-md-3 col-lg-2 p-0 sd_br_h"
+          style="width: 16%"
+        >
+          <div
+            class="offcanvas-md offcanvas-end"
+            tabindex="-1"
+            id="sidebarMenu"
+            aria-labelledby="sidebarMenuLabel"
+          >
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="sidebarMenuLabel">
+                Company name
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="offcanvas"
+                data-bs-target="#sidebarMenu"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3">
+              <ul class="nav flex-column">
+                <a href="dashboard.html">
+                  <img
+                    src="./assets/img/mesha_inc_logo.png"
+                    class="img-fluid sdbr_logo"
+                    alt="logo"
+                    style="width: 100%; height: auto"
+                  />
+                </a>
+                <li class="nav-item">
+                  <a
+                    class="nav-link d-flex align-items-center gap-2"
+                    href="dashboard.html"
+                  >
+                    <i class="bi bi-house sd_br_icn"></i> Dashboard
+                  </a>
+                </li>
+                <!-- <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-file-earmark-text"></i> Masters
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="brand_master.html">Brand Master</a></li>
+                                    <li><a class="dropdown-item" href="model_master.html">Model Master</a></li>
+                                    <li><a class="dropdown-item" href="car_parts.html">Parts Category Master</a></li>
+                                    <li><a class="dropdown-item" href="parts_master.html">Parts Master</a></li>
+
+                                </ul>
+                            </li>-->
+
+                <li class="nav-item">
+                  <!-- <a href="dashboard.html">
+                                    <img src="assets/img/location_map.svg" class="img-fluid sdbr_logo" />
+                                </a> -->
+                  <a
+                    class="nav-link d-flex align-items-center gap-2 active"
+                    style="color: #0d5e36"
+                    aria-current="page"
+                    href="alldevices.html"
+                  >
+                    <i class="bi bi-ev-front"></i>
+                    All Devices
+                  </a>
+                </li>
+                <!-- <li class="nav-item">
+                  <a
+                    class="nav-link d-flex align-items-center gap-2"
+                    href="navitem.html"
+                  >
+                    <i class="bi bi-emoji-expressionless"></i>
+                    NavItem
+                  </a>
+                </li> -->
+                <!-- <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center gap-2" href="vendor_management.html">
+                                    Vendor Management
+                                </a>
+                            </li> -->
+                <li class="nav-item" id="logoutBtn">
+                  <a class="nav-link d-flex align-items-center gap-2" href="">
+                    Log out
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <main
+          class="col-md-9 ms-sm-auto col-lg-10 px-md-4"
+          style="background-color: #f8f9fa; width: 84%; min-height: 100vh"
+        >
+          <!--top-bar-->
+          <!-- </div> -->
+          <!-- </div> -->
+          <!-- <div class="row">
+              <div class="col-lg-12">
+                <div class="ds_ttl_blk">
+                  <h1 class="dh1">👋🏼 Hello, Rohan.</h1>
+                <p class="dp1">Here is all your analytics overview</p>
+                </div>
+              </div>
+            </div> -->
+          <!-- </div> -->
+          <!-- card -->
+
+          <div
+            class="container mt-3 mb-3"
+            style="background-color: white; margin-left: 40px"
+          >
+            <!-- <div class="row height d-flex align-items-center">
+              <div class="col-md-6">
+                <div class="form tp_srch">
+                  <i class="fa fa-search"> </i>
+                  <i class="bi bi-search tp_srch_icn"></i>
+                  <input
+                    type="text"
+                    style="padding-left: 30px; background-color: #f8f9fa"
+                    class="form-control form-input"
+                    placeholder="Search"
+                  />
+                </div>
+              </div>
+            </div> -->
+          </div>
+
+          <!-- card -->
+          <div
+            class="container-fluid"
+            style="
+              background-color: #f8f9fa;
+              border-radius: 2px;
+              padding-bottom: 20px;
+              border-radius: 10px;
+              padding: 15px;
+            "
+          >
+            <!-- <div class="row">
+              <div class="col-lg-12">
+                <div class="ds_ttl_blk">
+                  <h1 class="dh1">👋🏼 Hello, Rohan.</h1>
+                  <p class="dp1">Here is all your analytics overview</p>
+                </div>
+              </div>
+            </div> -->
+
+            <div class="container-fluid m-0 p-0" style="border-radius: 50px">
+              <!-- table-top -->
+              <section
+                class="sc_tbl_tp"
+                style="
+                  border-top-left-radius: 10px;
+                  border-top-right-radius: 10px;
+                  margin: 0;
+                  padding: 10px;
+                "
+              >
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="d-flex justify-content-between">
+                        <div class="">
+                          <h3 class="dh2">Device Diagnostics</h3>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+              <!-- table-top -->
+
+              <div class="container-fluid m-2">
+                &nbsp;&nbsp; Generate Reports On Date Range,
+                <select id="devices"></select>
+                &nbsp; From: <input type="text" id="fromDate" /> &nbsp; To:
+                <input type="text" id="toDate" /> &nbsp;
+                <button
+                  class="btn btn-sm btn-danger"
+                  onclick="downloadDateBased()"
+                >
+                  Download CSV
+                </button>
+                &nbsp;
+                <button
+                  class="btn btn-sm btn-danger"
+                  onclick="downloadRangeBased()"
+                >
+                  Date Range CSV
+                </button>
+                <span
+                  id="errMessage"
+                  style="color: red; font-size: 10px"
+                ></span>
+              </div>
+
+              <div
+                class="container-fluid m-0 p-0"
+                style="
+                  border-bottom-left-radius: 20px;
+                  border-bottom-right-radius: 20px;
+                  background-color: white;
+                  overflow-x: auto;
+                "
+              >
+                <!--TABLE-->
+                <table class="table tbl_mb table_tal">
+                  <thead class="tbl_h1">
+                    <tr>
+                      <!--<th class="tbl_h_bg tbl_th_by">Vendore Name</th> -->
+                      <th class="tbl_h_bg tbl_th_by">Device</th>
+                      <th class="tbl_h_bg tbl_th_by">Status</th>
+                      <!-- <th class="tbl_h_bg tbl_th_by">Alert</th> -->
+                      <!-- <th class="tbl_h_bg tbl_th_by">BV</th> -->
+                      <th class="tbl_h_bg tbl_th_by">B1</th>
+                      <th class="tbl_h_bg tbl_th_by">B2</th>
+                      <th class="tbl_h_bg tbl_th_by">B3</th>
+                      <th class="tbl_h_bg tbl_th_by">B4</th>
+                      <th class="tbl_h_bg tbl_th_by">Battery Bank Voltage</th>
+                      <th class="tbl_h_bg tbl_th_by">A</th>
+                      <th class="tbl_h_bg tbl_th_by">D</th>
+                      <th class="tbl_h_bg tbl_th_by">T</th>
+                      <th class="tbl_h_bg tbl_th_by">Location</th>
+                      <th class="tbl_h_bg tbl_th_by">Date/Time</th>
+                      <th class="tbl_h_bg tbl_th_by">Set Threshold</th>
+                      <th class="tbl_h_bg tbl_th_by">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Add table rows here -->
+                    <!-- <tr>
+                    <td>Vendor Name</td>
+                    <td>M4</td>
+                    <td>
+                      <div class="color_box" style="background-color: #00B562;">
+                        <p>Online</p>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="container round_container m-0 p-0" style="background-color: #00B562;">
+                      </div>
+                    </td>
+                    <td>49.47</td>
+                    <td>13.03</td>
+                    <td>12.72</td>
+                    <td>12.92</td>
+                    <td>12.73</td>
+                    <td>0.01</td>
+                    <td>55.70</td>
+                    <td>33.70</td>
+                    <td>
+                      <button class="btn btn_local_style">View</button>
+                    </td>
+                    <td>
+                      23/12/2024 <br />
+                      6:30 PM
+                    </td>
+                    <td>
+                      <button class="icon_button"><i style="color: #626C70;" class="bi bi-eye-fill"></i></button>
+                      <button class="icon_button"><i style="color: #626C70;" class="bi bi-download"></i></button>
+                    </td>
+                  </tr> -->
+                    <!-- <tr>
+                    <td>Vendor Name</td>
+                    <td>M4</td>
+                    <td>
+                      <div class="color_box" style="background-color: #00B562;">
+                        <p>Online</p>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="container round_container m-0 p-0" style="background-color: #00B562;">
+                      </div>
+                    </td>
+                    <td>49.47</td>
+                    <td>13.03</td>
+                    <td>12.72</td>
+                    <td>12.92</td>
+                    <td>12.73</td>
+                    <td>0.01</td>
+                    <td>55.70</td>
+                    <td>33.70</td>
+                    <td>
+                      <button class="btn btn_local_style">View</button>
+                    </td>
+                    <td>
+                      23/12/2024 <br />
+                      6:30 PM
+                    </td>
+                    <td>
+                      <button class="btn icon_button"><i style="color: #626C70;" class="bi bi-eye-fill"></i></button>
+                      <button class="btn icon_button"><i style="color: #626C70;" class="bi bi-download"></i></button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Vendor Name</td>
+                    <td>M4</td>
+                    <td>
+                      <div class="color_box" style="background-color: #626C70;">
+                        <p>Offline</p>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="container round_container m-0 p-0" style="background-color: #626C70;">
+                      </div>
+                    </td>
+                    <td>49.47</td>
+                    <td>13.03</td>
+                    <td>12.72</td>
+                    <td>12.92</td>
+                    <td>12.73</td>
+                    <td>0.01</td>
+                    <td>55.70</td>
+                    <td>33.70</td>
+                    <td>
+                      <button class="btn btn_local_style">View</button>
+                    </td>
+                    <td>
+                      23/12/2024 <br />
+                      6:30 PM
+                    </td>
+                    <td>
+                      <button class="icon_button"><i style="color: #626C70;" class="bi bi-eye-fill"></i></button>
+                      <button class="icon_button"><i style="color: #626C70;" class="bi bi-download"></i></button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Vendor Name</td>
+                    <td>M4</td>
+                    <td>
+                      <div class="color_box" style="background-color: #2E89FD;">
+                        <p>Completed</p>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="container round_container m-0 p-0" style="background-color: #2E89FD;">
+                      </div>
+                    </td>
+                    <td>49.47</td>
+                    <td>13.03</td>
+                    <td>12.72</td>
+                    <td>12.92</td>
+                    <td>12.73</td>
+                    <td>0.01</td>
+                    <td>55.70</td>
+                    <td>33.70</td>
+                    <td>
+                      <button class="btn btn_local_style"
+                        onclick="return window.location.href = 'dashboard2.html'">View</button>
+                    </td>
+                    <td>
+                      23/12/2024 <br />
+                      6:30 PM
+                    </td>
+                    <td>
+                      <button class="icon_button"><i style="color: #626C70;" class="bi bi-eye-fill"></i></button>
+                      <button class="icon_button"><i style="color: #626C70;" class="bi bi-download"></i></button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Vendor Name</td>
+                    <td>M4</td>
+                    <td>
+                      <div class="color_box" style="background-color: #626C70;">
+                        <p>Offline</p>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="container round_container m-0 p-0" style="background-color: #00B562;">
+                      </div>
+                    </td>
+                    <td>49.47</td>
+                    <td>13.03</td>
+                    <td>12.72</td>
+                    <td>12.92</td>
+                    <td>12.73</td>
+                    <td>0.01</td>
+                    <td>55.70</td>
+                    <td>33.70</td>
+                    <td>
+                      <button class="btn btn_local_style">View</button>
+                    </td>
+                    <td>
+                      23/12/2024 <br />
+                      6:30 PM
+                    </td>
+                    <td>
+                      <button class="icon_button"><i style="color: #626C70;" class="bi bi-eye-fill"></i></button>
+                      <button class="icon_button" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
+                          style="color: #626C70;" class="bi bi-download"></i></button>
+                    </td>
+                  </tr> -->
+
+                    <!-- Add more rows as needed -->
+                  </tbody>
+                </table>
+                <!--TABLE-->
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+    <!-- dashoard -->
+
+    <!-- Threshold modal start -->
+    <div
+      class="modal fade"
+      id="ThresholdModal"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      tabindex="-1"
+      aria-labelledby="ThresholdModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="ThresholdModalLabel">
+              Add New Threshold
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <form onsubmit="handleVoltageSubmit(event)">
+            <div class="modal-body">
+              <div class="thresholdModalInputs">
+                <!-- Voltage 1 -->
+                <div class="thresholdModalInputContainer">
+                  <h6>Battery Voltage V1</h6>
+                  <div class="thresholdModalInputGroup">
+                    <div class="thresholdModalInput">
+                      <label for="v1_low">V1 Low</label>
+                      <input
+                        name="v1_low"
+                        type="text"
+                        class="form-control"
+                        id="v1_low"
+                        placeholder="Set Low Voltage"
+                        onchange="handleVoltagechange(event)"
+                      />
+                    </div>
+                    <div class="thresholdModalInput">
+                      <label for="v1_high">V1 High</label>
+                      <input
+                        name="v1_high"
+                        type="text"
+                        class="form-control"
+                        id="v1_high"
+                        placeholder="Set High Voltage"
+                        onchange="handleVoltagechange(event)"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- Voltage 2 -->
+                <div class="thresholdModalInputContainer">
+                  <h6>Battery Voltage V2</h6>
+                  <div class="thresholdModalInputGroup">
+                    <div class="thresholdModalInput">
+                      <label for="v2_low">V2 Low</label>
+                      <input
+                        name="v2_low"
+                        type="text"
+                        class="form-control"
+                        id="v2_low"
+                        placeholder="Set Low Voltage"
+                        onchange="handleVoltagechange(event)"
+                      />
+                    </div>
+                    <div class="thresholdModalInput">
+                      <label for="v2_high">V2 High</label>
+                      <input
+                        name="v2_high"
+                        type="text"
+                        class="form-control"
+                        id="v2_high"
+                        placeholder="Set High Voltage"
+                        onchange="handleVoltagechange(event)"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- Voltage 3 -->
+                <div class="thresholdModalInputContainer">
+                  <h6>Battery Voltage V3</h6>
+                  <div class="thresholdModalInputGroup">
+                    <div class="thresholdModalInput">
+                      <label for="v3_low">V3 Low</label>
+                      <input
+                        name="v3_low"
+                        type="text"
+                        class="form-control"
+                        id="v3_low"
+                        placeholder="Set Low Voltage"
+                        onchange="handleVoltagechange(event)"
+                      />
+                    </div>
+                    <div class="thresholdModalInput">
+                      <label for="v3_high">V3 High</label>
+                      <input
+                        name="v3_high"
+                        type="text"
+                        class="form-control"
+                        id="v3_high"
+                        placeholder="Set High Voltage"
+                        onchange="handleVoltagechange(event)"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- Voltage 4 -->
+                <div class="thresholdModalInputContainer">
+                  <h6>Battery Voltage V4</h6>
+                  <div class="thresholdModalInputGroup">
+                    <div class="thresholdModalInput">
+                      <label for="v4_low">V4 Low</label>
+                      <input
+                        name="v4_low"
+                        type="text"
+                        class="form-control"
+                        id="v4_low"
+                        placeholder="Set Low Voltage"
+                        onchange="handleVoltagechange(event)"
+                      />
+                    </div>
+                    <div class="thresholdModalInput">
+                      <label for="v4_high">V4 High</label>
+                      <input
+                        name="v4_high"
+                        type="text"
+                        class="form-control"
+                        id="v4_high"
+                        placeholder="Set High Voltage"
+                        onchange="handleVoltagechange(event)"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <small
+                  id="voltageInputValidationMsg"
+                  class="text-danger"
+                  style="display: none"
+                ></small>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-light"
+                data-bs-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="btn btn-success"
+                id="addThresholdBtn"
+              >
+                Add
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Threshold modal end -->
+    <!-- toast start -->
+    <div
+      id="toastNotification"
+      class="toast text-white position-fixed top-0 end-0 m-3"
+      role="alert"
+      aria-live="assertive"
+      aria-atomic="true"
+      data-bs-delay="4000"
+    >
+      <div class="toast-body position-relative">
+        <span id="toastMessage">Default message</span>
+        <button
+          type="button"
+          class="btn-close btn-close-white position-absolute top-0 end-0 me-2 mt-2"
+          data-bs-dismiss="toast"
+          aria-label="Close"
+        ></button>
+      </div>
+    </div>
+
+    <!-- toast end -->
+    <!--modal-->
+    <!-- Button trigger modal -->
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">
+              Download Report
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <label class="form-label" for="">Select date</label>
+            <input
+              class="form-control form-input"
+              type="text"
+              name="datetimes"
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn"
+              style="background-color: #00b562; color: white"
+            >
+              Download Reports
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--modal-->
+
+    <!-- map modal -->
+    <div
+      class="modal fade"
+      id="mapModal"
+      tabindex="-1"
+      aria-labelledby="mapModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="mapModalLabel">Map</h5>
+            <button
+              type="button"
+              class="close btn_local_style"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="map" style="height: 500px; width: 100%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- map modal -->
+
+    <!--drag/drop-->
+    <script>
+      const dropArea = document.getElementById("drop-area");
+      const fileInput = document.getElementById("fileInput");
+      const uploadBtn = document.getElementById("uploadBtn");
+      const imagePreview = document.querySelector(".image-preview");
+
+      // Prevent default drag behaviors
+      ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+        dropArea.addEventListener(eventName, preventDefaults, false);
+        document.body.addEventListener(eventName, preventDefaults, false);
+      });
+
+      // Highlight drop area when dragging over
+      ["dragenter", "dragover"].forEach((eventName) => {
+        dropArea.addEventListener(eventName, highlight, false);
+      });
+
+      // Unhighlight drop area when not dragging over
+      ["dragleave", "drop"].forEach((eventName) => {
+        dropArea.addEventListener(eventName, unhighlight, false);
+      });
+
+      // Handle dropped files
+      dropArea.addEventListener("drop", handleDrop, false);
+
+      function preventDefaults(event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      function highlight() {
+        dropArea.classList.add("highlight");
+      }
+
+      function unhighlight() {
+        dropArea.classList.remove("highlight");
+      }
+
+      function handleDrop(event) {
+        const dt = event.dataTransfer;
+        const files = dt.files;
+
+        handleFiles(files);
+      }
+
+      function handleFiles(files) {
+        for (const file of files) {
+          const reader = new FileReader();
+          reader.onload = function () {
+            const imgElement = document.createElement("img");
+            imgElement.src = reader.result;
+
+            const deleteIcon = document.createElement("span");
+            deleteIcon.classList.add("delete-icon");
+            deleteIcon.innerHTML = '<i class="bi bi-trash"></i>';
+
+            imgElement.appendChild(deleteIcon);
+            imagePreview.appendChild(imgElement);
+
+            // Add event listener to delete icon
+            deleteIcon.addEventListener("click", function () {
+              imgElement.remove();
+            });
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+
+      // Open file dialog when upload button is clicked
+      uploadBtn.addEventListener("click", function () {
+        const images = imagePreview.querySelectorAll("img");
+        const formData = new FormData();
+
+        images.forEach((img) => {
+          formData.append("images[]", img.src);
+        });
+
+        // Use fetch API to send data to the server or handle it accordingly
+        fetch("your-upload-url", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.text();
+          })
+          .then((text) => {
+            console.log(text); // Do something with the response
+          })
+          .catch((error) => {
+            console.error(
+              "There was a problem with the fetch operation:",
+              error
+            );
+          });
+      });
+
+      // Handle file input change
+      fileInput.addEventListener("change", function () {
+        const files = fileInput.files;
+        handleFiles(files);
+      });
+
+      // Trigger file input click when clicking on the drop area
+      dropArea.addEventListener("click", function () {
+        fileInput.click();
+      });
+    </script>
+    <!--drag/drop-->
+
+    <!-- date range picker -->
+    <script>
+      $(function () {
+        $('input[name="datetimes"]').daterangepicker({
+          timePicker: true,
+          startDate: moment().startOf("hour"),
+          endDate: moment().startOf("hour").add(32, "hour"),
+          // buttonClasses: "btn date_picker_button",
+          applyButtonClasses: "btn date_picker_button",
+          // cancelClass: "btn-default nn",
+          locale: {
+            format: "DD/MM/YY hh:mm A",
+          },
+        });
+      });
+    </script>
+
+    <script>
+      $(function () {
+        $("#fromDate").datepicker({ dateFormat: "yy-mm-dd" });
+        $("#toDate").datepicker({ dateFormat: "yy-mm-dd" });
+      });
+
+      function downloadDateBased() {
+        var deviceId = document.getElementById("devices").value;
+        var fromDate = document.getElementById("fromDate").value;
+
+        if (fromDate == "") {
+          document.getElementById("errMessage").innerHTML = "Select From Date";
+          return false;
+        }
+
+        var toDate = document.getElementById("toDate").value;
+
+        if (toDate == "") {
+          document.getElementById("errMessage").innerHTML = "Select To Date";
+          return false;
+        }
+
+        var token = localStorage.getItem("authToken");
+
+        if (token == "") {
+          document.getElementById("errMessage").innerHTML = "Please Reload";
+          return false;
+        }
+
+        window.location.href =
+          "https://dms.meshaenergy.com/apis/download/csv/date-range/" +
+          deviceId +
+          "/" +
+          fromDate +
+          "/" +
+          toDate +
+          "/" +
+          token;
+      }
+
+      function downloadRangeBased() {
+        var deviceId = document.getElementById("devices").value;
+        var fromDate = document.getElementById("fromDate").value;
+
+        if (fromDate == "") {
+          document.getElementById("errMessage").innerHTML = "Select From Date";
+          return false;
+        }
+
+        var toDate = document.getElementById("toDate").value;
+
+        if (toDate == "") {
+          document.getElementById("errMessage").innerHTML = "Select To Date";
+          return false;
+        }
+
+        var token = localStorage.getItem("authToken");
+
+        if (token == "") {
+          document.getElementById("errMessage").innerHTML = "Please Reload";
+          return false;
+        }
+
+        window.location.href =
+          "https://dms.meshaenergy.com/apis/download/charge_discharge/csv/date-range/" +
+          deviceId +
+          "/" +
+          fromDate +
+          "/" +
+          toDate +
+          "/" +
+          token;
+      }
+    </script>
+  </body>
+</html>
+<script src="assets/js/alldevices.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDimDjoGeaoSdHBzihrmYnscbcALzfFQ24&callback=initMap"></script>

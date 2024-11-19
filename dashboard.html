@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mesha Energy - DMS Diagnostics</title>
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
+
+    <link href="assets/owl/assets/owl.carousel.min.css" rel="stylesheet" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+    />
+
+    <style>
+      body {
+        /* background-color: #f8f9fa; */
+        background-color: white;
+      }
+
+      /* dashboard */
+
+      /*
+ * Sidebar
+ */
+
+      /*
+ * Navbar
+ */
+
+      .navbar-brand {
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+        background-color: rgba(0, 0, 0, 0.25);
+        box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.25);
+      }
+
+      .navbar .form-control {
+        padding: 0.75rem 1rem;
+      }
+
+      .dropdown-toggle {
+        outline: 0;
+      }
+
+      .btn-toggle {
+        padding: 0.25rem 0.5rem;
+        font-weight: 600;
+        color: var(--bs-emphasis-color);
+        background-color: transparent;
+      }
+
+      .btn-toggle:hover,
+      .btn-toggle:focus {
+        color: rgba(var(--bs-emphasis-color-rgb), 0.85);
+        background-color: var(--bs-tertiary-bg);
+      }
+
+      .btn-toggle::before {
+        width: 1.25em;
+        line-height: 0;
+        content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+        transition: transform 0.35s ease;
+        transform-origin: 0.5em 50%;
+      }
+
+      [data-bs-theme="dark"] .btn-toggle::before {
+        content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%28255,255,255,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+      }
+
+      .btn-toggle[aria-expanded="true"] {
+        color: rgba(var(--bs-emphasis-color-rgb), 0.85);
+      }
+
+      .btn-toggle[aria-expanded="true"]::before {
+        transform: rotate(90deg);
+      }
+
+      .btn-toggle-nav a {
+        padding: 0.1875rem 0.5rem;
+        margin-top: 0.125rem;
+        margin-left: 1.25rem;
+      }
+
+      .btn-toggle-nav a:hover,
+      .btn-toggle-nav a:focus {
+        background-color: var(--bs-tertiary-bg);
+      }
+
+      .scrollarea {
+        overflow-y: auto;
+      }
+
+      .card-container {
+        background-color: white;
+        border-radius: 5px;
+      }
+
+      .color_box {
+        padding-left: 2px;
+        padding-right: 2px;
+        height: 25px;
+        border-radius: 4px;
+        color: white;
+        display: flex;
+        justify-content: center;
+        /* align-items: center; */
+      }
+
+      .lr_margin_10 {
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+
+      .verticle_divide {
+        border: 1px solid black;
+        height: 20px;
+      }
+
+      .round_container {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+      }
+
+      @media (min-width: 768px) {
+        .sidebar .offcanvas-lg {
+          position: -webkit-sticky;
+          position: sticky;
+          top: 48px;
+        }
+
+        .navbar-search {
+          display: block;
+        }
+      }
+
+      .sidebar-heading {
+        font-size: 0.75rem;
+      }
+
+      /*
+ * Navbar
+ */
+
+      .navbar-brand {
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+        background-color: rgba(0, 0, 0, 0.25);
+        box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.25);
+      }
+
+      .navbar .form-control {
+        padding: 0.75rem 1rem;
+      }
+
+      /* new-dashboard */
+
+      /***upload***/
+      .upload-container {
+        max-width: 600px;
+        margin: auto;
+      }
+
+      .image-preview {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .image-preview img {
+        max-width: 150px;
+        max-height: 150px;
+        position: relative;
+      }
+
+      .image-preview img:hover .delete-icon {
+        display: block;
+      }
+
+      .delete-icon {
+        display: none;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        padding: 5px;
+        cursor: pointer;
+      }
+
+      #drop-area {
+        border: 2px dashed #ccc;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      #drop-area.highlight {
+        background-color: #f0f0f0;
+      }
+
+      #fileInput {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- dashoard -->
+
+    <header
+      class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow d-block d-lg-none"
+      data-bs-theme="dark"
+    >
+      <a
+        class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white"
+        href="#"
+        >Company name</a
+      >
+
+      <ul class="navbar-nav flex-row d-md-none">
+        <li class="nav-item text-nowrap">
+          <button
+            class="nav-link px-3 text-white"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSearch"
+            aria-controls="navbarSearch"
+            aria-expanded="false"
+            aria-label="Toggle search"
+          >
+            <svg class="bi"><use xlink:href="#search" /></svg>
+          </button>
+        </li>
+        <li class="nav-item text-nowrap">
+          <button
+            class="nav-link px-3 text-white"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#sidebarMenu"
+            aria-controls="sidebarMenu"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <i class="bi bi-distribute-vertical"></i>
+          </button>
+        </li>
+      </ul>
+
+      <div id="navbarSearch" class="navbar-search w-100 collapse">
+        <input
+          class="form-control w-100 rounded-0 border-0"
+          type="text"
+          placeholder="Search"
+          aria-label="Search"
+        />
+      </div>
+    </header>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="sidebar border border-right col-md-3 col-lg-2 p-0 sd_br_h" style="width: 16%;">
+          <div
+            class="offcanvas-md offcanvas-end"
+            tabindex="-1"
+            id="sidebarMenu"
+            aria-labelledby="sidebarMenuLabel"
+          >
+            <div class="offcanvas-header">
+              <h5 class="offcanvas-title" id="sidebarMenuLabel">
+                Company name
+              </h5>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="offcanvas"
+                data-bs-target="#sidebarMenu"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="offcanvas-body d-md-flex flex-column p-0 pt-lg-3">
+              <ul class="nav flex-column">
+                <a href="dashboard.html">
+                  <img
+                    src="./assets/img/mesha_inc_logo.png"
+                    class="img-fluid sdbr_logo"
+                    alt="logo"
+                    style="width: 100%; height: auto"
+                  />
+                </a>
+                <li class="nav-item">
+                  <a
+                    class="nav-link d-flex align-items-center gap-2 active"
+                    style="color: #0d5e36"
+                    aria-current="page"
+                    href="dashboard.html"
+                  >
+                    <i class="bi bi-house sd_br_icn"></i> Dashboard
+                  </a>
+                </li>
+                <!-- <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-file-earmark-text"></i> Masters
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="brand_master.html">Brand Master</a></li>
+                                    <li><a class="dropdown-item" href="model_master.html">Model Master</a></li>
+                                    <li><a class="dropdown-item" href="car_parts.html">Parts Category Master</a></li>
+                                    <li><a class="dropdown-item" href="parts_master.html">Parts Master</a></li>
+
+                                </ul>
+                            </li>-->
+
+                <li class="nav-item">
+                  <!-- <a href="dashboard.html">
+                                    <img src="assets/img/location_map.svg" class="img-fluid sdbr_logo" />
+                                </a> -->
+                  <a
+                    class="nav-link d-flex align-items-center gap-2"
+                    href="alldevices.html"
+                  >
+                    <i class="bi bi-ev-front"></i>
+                    All Devices
+                  </a>
+                </li>
+                <!-- <li class="nav-item">
+                  <a
+                    class="nav-link d-flex align-items-center gap-2"
+                    href="navitem.html"
+                  >
+                    <i class="bi bi-emoji-expressionless"></i>
+                    NavItem
+                  </a>
+                </li> -->
+                <!-- <li class="nav-item">
+                                <a class="nav-link d-flex align-items-center gap-2" href="vendor_management.html">
+                                    Vendor Management
+                                </a>
+                            </li> -->
+                <li class="nav-item" id="logoutBtn">
+                  <a class="nav-link d-flex align-items-center gap-2" href="">
+                    Log out
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <main
+          class="col-md-9 ms-sm-auto col-lg-10 px-md-4"
+          style="background-color: #f8f9fa; width: 84%; min-height: 100vh;"
+        >
+          <div
+            class="container-fluid mt-3 mb-3"
+            style="background-color: #f8f9fa; margin: 0px"
+          >
+            <!-- <div class="row height d-flex align-items-center">
+              <div class="col-md-6">
+                <div class="form tp_srch">
+                  <i class="bi bi-search tp_srch_icn"></i>
+                  <input
+                    type="text"
+                    style="padding-left: 30px; background-color: #f8f9fa"
+                    class="form-control form-input"
+                    placeholder="Search"
+                  />
+                  <span class="left-pan"
+                    ><i class="fa fa-microphone"> </i
+                  ></span>
+                </div>
+              </div>
+            </div> -->
+          </div>
+
+          <div
+            class="container-fluid"
+            id="dashboardContainer"
+            style="background-color: #f8f9fa; padding: 20px; margin: 0px;"
+          >
+            <!-- inner html data from dashboard.js -->
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="ds_ttl_blk">
+                  <h1 class="dh1">Device Parameters</h1>
+                  <p class="dp1">
+                    View/download detailed device parameters for multiple data
+                    points
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="container-fluid mb-3"
+              style="border-top: 1px solid #4a5154; opacity: 30%"
+            ></div>
+
+            <div class="d-flex justify-content-between">
+              <div class="card-container">
+                <div class="d-flex align-items-center">
+                  <h1 class="dh1 lr_margin_10">
+                    Customer Name - <span id="vendorName"></span>
+                  </h1>
+                  <div
+                    class="color_box lr_margin_10"
+                    style="background-color: #00b562"
+                  >
+                    <p>Online</p>
+                  </div>
+
+                  <div class="verticle_divide lr_margin_10"></div>
+                  <h1 class="dh1 lr_margin_10">
+                    Device Id-
+                    <select id="devices" name="devices">
+                      <!--<option value="MESH2099">MESH2099</option>
+                      <option value="MESH2098">MESH2098</option> -->
+                    </select>
+                  </h1>
+
+                  <!--<div class="verticle_divide lr_margin_10"></div>
+          <h1 class="dh1 lr_margin_10">Alert</h1>
+          <div
+            class="round_container lr_margin_10"
+            style="background-color: #00b562"
+          ></div>-->
+                  <div class="verticle_divide lr_margin_10"></div>
+                  <h1 class="dh1 lr_margin_10">00:00; DD/MM/YYYY</h1>
+                </div>
+              </div>
+              <!-- id="exportDataBtn" -->
+              <button
+                class="btn"
+                style="background-color: #00b562; color: white"
+                onclick="window.location.href='alldevices.html'"
+              >
+                Export Data Log
+              </button>
+              <a id="downloadLink" style="display: none"></a>
+            </div>
+
+            <!-- card -->
+
+            <div
+              class="container-fluid mb-3 mt-3"
+              style="border-top: 1px solid #4a5154; opacity: 30%"
+            ></div>
+
+            <!-- table-top -->
+            <div class="col">
+              <div
+                class="container-fluid"
+                style="
+                  background-color: white;
+                  padding-left: 5px;
+                  padding-top: 3px;
+                  padding-bottom: 3px;
+                  border-top-left-radius: 8px;
+                  border-top-right-radius: 8px;
+                "
+              >
+                <h1 class="dh1">Map View</h1>
+              </div>
+            </div>
+          </div>
+
+          <div class="container-fluid mt-5">
+            <h2>Charge/Discharge Data</h2>
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>Cycle Type</th>
+                  <th>Date Time - From</th>
+                  <th>Date Time - To</th>
+                  <th>Distance Travelled</th>
+                  <th>Duration - Hours</th>
+                  <th>Temperature - Max</th>
+                  <th>Temperature - Min</th>
+                  <th>AH</th>
+                  <th>V1</th>
+                  <th>V2</th>
+                  <th>V3</th>
+                  <th>V4</th>
+                  <th>Amps - Max</th>
+                  <th>Amps - Min</th>
+                  <th>Bank Voltage</th>
+                </tr>
+              </thead>
+              <tbody id="data-table-body">
+                <!-- Rows will be inserted here -->
+              </tbody>
+            </table>
+          </div>
+        </main>
+      </div>
+    </div>
+    <!-- dashoard -->
+
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/jquery-3.7.0.js"></script>
+    <script src="assets/js/jquery-3.7.0.js"></script>
+    <script src="assets/owl/owl.carousel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
+    <!--drag/drop-->
+    <script>
+      const dropArea = document.getElementById("drop-area");
+      const fileInput = document.getElementById("fileInput");
+      const uploadBtn = document.getElementById("uploadBtn");
+      const imagePreview = document.querySelector(".image-preview");
+
+      // Prevent default drag behaviors
+      ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+        dropArea.addEventListener(eventName, preventDefaults, false);
+        document.body.addEventListener(eventName, preventDefaults, false);
+      });
+
+      // Highlight drop area when dragging over
+      ["dragenter", "dragover"].forEach((eventName) => {
+        dropArea.addEventListener(eventName, highlight, false);
+      });
+
+      // Unhighlight drop area when not dragging over
+      ["dragleave", "drop"].forEach((eventName) => {
+        dropArea.addEventListener(eventName, unhighlight, false);
+      });
+
+      // Handle dropped files
+      dropArea.addEventListener("drop", handleDrop, false);
+
+      function preventDefaults(event) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      function highlight() {
+        dropArea.classList.add("highlight");
+      }
+
+      function unhighlight() {
+        dropArea.classList.remove("highlight");
+      }
+
+      function handleDrop(event) {
+        const dt = event.dataTransfer;
+        const files = dt.files;
+
+        handleFiles(files);
+      }
+
+      function handleFiles(files) {
+        for (const file of files) {
+          const reader = new FileReader();
+          reader.onload = function () {
+            const imgElement = document.createElement("img");
+            imgElement.src = reader.result;
+
+            const deleteIcon = document.createElement("span");
+            deleteIcon.classList.add("delete-icon");
+            deleteIcon.innerHTML = '<i class="bi bi-trash"></i>';
+
+            imgElement.appendChild(deleteIcon);
+            imagePreview.appendChild(imgElement);
+
+            // Add event listener to delete icon
+            deleteIcon.addEventListener("click", function () {
+              imgElement.remove();
+            });
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+
+      // Open file dialog when upload button is clicked
+      uploadBtn.addEventListener("click", function () {
+        const images = imagePreview.querySelectorAll("img");
+        const formData = new FormData();
+
+        images.forEach((img) => {
+          formData.append("images[]", img.src);
+        });
+
+        // Use fetch API to send data to the server or handle it accordingly
+        fetch("your-upload-url", {
+          method: "POST",
+          body: formData,
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.text();
+          })
+          .then((text) => {
+            console.log(text); // Do something with the response
+          })
+          .catch((error) => {
+            console.error(
+              "There was a problem with the fetch operation:",
+              error
+            );
+          });
+      });
+
+      // Handle file input change
+      fileInput.addEventListener("change", function () {
+        const files = fileInput.files;
+        handleFiles(files);
+      });
+
+      // Trigger file input click when clicking on the drop area
+      dropArea.addEventListener("click", function () {
+        fileInput.click();
+      });
+    </script>
+    <!--drag/drop-->
+  </body>
+</html>
+<script src="./assets/js/dashboard.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDimDjoGeaoSdHBzihrmYnscbcALzfFQ24&callback=initMap"></script>
