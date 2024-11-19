@@ -316,9 +316,9 @@ document.addEventListener("DOMContentLoaded", async function () {
           </td>
         `;
         fetchDistance(row.device_id, authToken);
-        fetchDeviceIds(customerId, authToken);
         tableBody[0].appendChild(tableRow);
       }
+      fetchDeviceIds(customerId, authToken);
     } catch (error) {
       console.log(error);
     }
