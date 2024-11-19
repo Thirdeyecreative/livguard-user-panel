@@ -13,7 +13,17 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((response) => response.json())
       .then((data) => {
         console.log("Success:", data);
-        data = data[0];
+        data = data[0] || {
+          latest_updated_time: "00:00",
+          device_log_date: Date(),
+          v1: "0",
+          v2: "0",
+          v3: "0",
+          v4: "0",
+          current: "0",
+          temperature: "0",
+          speed: "0",
+        };
         dashboardContainer.innerHTML = `
     <div class="row">
       <div class="col-lg-12">
@@ -261,10 +271,11 @@ document.addEventListener("DOMContentLoaded", function () {
         <div id="map" style="height: 700px; width: 100%;"></div>
       </div>
     </div>`;
-        customers = ['Livguard','Mesha','Race','Korakso'];
+        customers = ["Livguard", "Mesha", "Race", "Korakso"];
         deviceId = localStorage.getItem("selectedDeviceId");
         customerId = localStorage.getItem("customerId");
-        document.getElementById('vendorName').innerHTML = customers[parseInt(customerId) - 1];
+        document.getElementById("vendorName").innerHTML =
+          customers[parseInt(customerId) - 1];
         // console.log("deviceId", deviceId);
         fetchDistance(deviceId, authToken);
         fetchDeviceIds(customerId, authToken);
@@ -376,12 +387,9 @@ function formatDate(dateString) {
 }
 
 function fetchDeviceIds(customerId, authToken) {
-  fetch(
-    `https://lgdms.livguard.com/devices/all/${customerId}/${authToken}`,
-    {
-      method: "GET",
-    }
-  )
+  fetch(`https://lgdms.livguard.com/devices/all/${customerId}/${authToken}`, {
+    method: "GET",
+  })
     .then((response) => response.json())
     .then((data) => {
       console.log("Success:", data);
@@ -390,13 +398,13 @@ function fetchDeviceIds(customerId, authToken) {
         optionsTemplet += `<option value="${element.device_id}">${element.device_id}</option>`;
       });
       document.getElementById("devices").innerHTML = optionsTemplet;
-      
-        let currentDeviceId = localStorage.getItem("selectedDeviceId");
-        if (!currentDeviceId) {
-            localStorage.setItem("selectedDeviceId", data[0].device_id);
-        }
-         document.getElementById("devices").value = localStorage.getItem("selectedDeviceId");
-         
+
+      let currentDeviceId = localStorage.getItem("selectedDeviceId");
+      if (!currentDeviceId) {
+        localStorage.setItem("selectedDeviceId", data[0].device_id);
+      }
+      document.getElementById("devices").value =
+        localStorage.getItem("selectedDeviceId");
     })
     .catch((error) => {
       console.error("Error:", error);
@@ -404,7 +412,6 @@ function fetchDeviceIds(customerId, authToken) {
 }
 
 function fetchDistance(deviceId, authToken) {
-    
   /*if (!deviceId) {
     deviceId = "MESH2099";
   }*/
@@ -424,18 +431,22 @@ function fetchDistance(deviceId, authToken) {
     .catch((error) => {
       console.error("Error:", error);
     });
-    
-    chargeDischargeDisplay(localStorage.getItem("selectedDeviceId"),localStorage.getItem("authToken"));
+
+  chargeDischargeDisplay(
+    localStorage.getItem("selectedDeviceId"),
+    localStorage.getItem("authToken")
+  );
 }
 
-
-chargeDischargeDisplay(localStorage.getItem("selectedDeviceId"),localStorage.getItem("authToken"));
+chargeDischargeDisplay(
+  localStorage.getItem("selectedDeviceId"),
+  localStorage.getItem("authToken")
+);
 
 function chargeDischargeDisplay(deviceId, authToken) {
-    
-   var tableBody = document.getElementById('data-table-body');
-   tableBody.innerHTML = '';
-    
+  var tableBody = document.getElementById("data-table-body");
+  tableBody.innerHTML = "";
+
   fetch(
     `https://lgdms.livguard.com/dashboard/charge_discharge/csv/date-range/${deviceId}/${authToken}`,
     {
@@ -445,12 +456,10 @@ function chargeDischargeDisplay(deviceId, authToken) {
     .then((response) => response.json())
     .then((data) => {
       // console.log("Success: ++++++++++++++++++ ", data);
-            
-            
-            // Loop through the data and create table rows
-            data.forEach(item => {
-                
-                const row = `
+
+      // Loop through the data and create table rows
+      data.forEach((item) => {
+        const row = `
                     <tr>
                         <td>${item["Cycle Type"]}</td>
                         <td>${item["Date Time - From"]}</td>
@@ -470,8 +479,7 @@ function chargeDischargeDisplay(deviceId, authToken) {
                     </tr>
                 `;
         tableBody.innerHTML += row; // Append the row to the table
-        });
-    
+      });
     })
     .catch((error) => {
       console.error("Error:", error);
