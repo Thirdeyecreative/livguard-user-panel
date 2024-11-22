@@ -318,6 +318,7 @@ const gridOptions = {
       headerName: "Created Date",
       field: "createdDate",
       filter: "agDateColumnFilter",
+      maxWidth: 300,
       filterParams: {
         comparator: (filterLocalDateAtMidnight, cellValue) => {
           const dateParts = cellValue.split("-");
@@ -339,10 +340,15 @@ const gridOptions = {
     {
       headerName: "Created Tiem",
       field: "createdTime",
+      filter: false,
+      sortable: false,
+      maxWidth: 200,
     },
     {
       headerName: "Status",
       field: "status",
+      filter: false,
+      maxWidth: 150,
       cellRenderer: (params) => {
         const isActive = params.value === 1;
         const styles = isActive
