@@ -46,6 +46,11 @@ async function handleFileUpload(event) {
     formData.append("token", authToken);
     formData.append("deviceId", deviceSelect.value);
     formData.append("file", file);
+    console.log({
+      token: authToken,
+      deviceId: deviceSelect.value,
+      file: file,
+    });
 
     try {
       // Make the POST request to the backend
@@ -56,8 +61,8 @@ async function handleFileUpload(event) {
           body: formData,
         }
       );
-      console.log({response});
-      
+      console.log({ response });
+
       if (!response.ok) {
         const errorResponse = await response.json();
         throw new Error(errorResponse.message || "File upload failed");
@@ -82,7 +87,6 @@ async function handleFileUpload(event) {
     }
   }
 }
-
 
 function clearErrorMsg() {
   fileError.textContent = "";
@@ -248,3 +252,128 @@ async function fetchDeviceData() {
     return null;
   }
 }
+
+// ag-grid code start
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+
+  return `${day}-${month}-${year}`;
+}
+async function fetchOtaFilesData(gridApi) {
+  const authToken = localStorage.getItem("authToken");
+  console.log({ authToken });
+
+  const apiUrl = `https://lgdms.livguard.com/ota-files/all/${authToken}`;
+
+  try {
+    const response = await fetch(apiUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log({ data });
+
+    data.errFlag === 1
+      ? (window.location.href = "/")
+      : console.log("Super admin data:", data);
+
+    const formattedData = data.map((item, index) => ({
+      index: index + 1,
+      fileName: item.file_name,
+      createdDate: formatDate(item.created_date),
+      createdTime: item.created_time,
+      status: item.status,
+      id: item.id,
+      deviceId: item.device_master_id,
+    }));
+    gridApi.setGridOption("rowData", formattedData);
+  } catch (error) {
+    console.error("Error fetching customer data:", error);
+    window.location.href = "/";
+  }
+}
+const gridOptions = {
+  rowData: [],
+  columnDefs: [
+    {
+      headerName: "Sl. No",
+      field: "index",
+      maxWidth: 100,
+      filter: false,
+      suppressAutoSize: true,
+    },
+    {
+      headerName: "File Name",
+      field: "fileName",
+    },
+    {
+      headerName: "Created Date",
+      field: "createdDate",
+      filter: "agDateColumnFilter",
+      filterParams: {
+        comparator: (filterLocalDateAtMidnight, cellValue) => {
+          const dateParts = cellValue.split("-");
+          const year = Number(dateParts[2]);
+          const month = Number(dateParts[1]) - 1;
+          const day = Number(dateParts[0]);
+          const cellDate = new Date(year, month, day);
+          // Compare dates
+          if (cellDate < filterLocalDateAtMidnight) {
+            return -1;
+          } else if (cellDate > filterLocalDateAtMidnight) {
+            return 1;
+          } else {
+            return 0;
+          }
+        },
+      },
+    },
+    {
+      headerName: "Created Tiem",
+      field: "createdTime",
+    },
+  ],
+
+  defaultColDef: {
+    sortable: true,
+    filter: "agTextColumnFilter",
+    floatingFilter: true,
+    flex: 1,
+    filterParams: {
+      debounceMs: 0,
+      buttons: ["reset"],
+    },
+    cellClassRules: {
+      "disabled-cell": (params) =>
+        params.data.email === localStorage.getItem("userEmail") ||
+        params.data.id === 1,
+    },
+  },
+  domLayout: "autoHeight",
+  getRowHeight: function (params) {
+    return 80;
+  },
+  pagination: true,
+  paginationPageSize: 10,
+  paginationPageSizeSelector: [10, 20, 30],
+  // enableCellTextSelection: true,
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+  const gridDiv = document.querySelector("#myGrid");
+  gridApi = agGrid.createGrid(gridDiv, gridOptions);
+
+  fetchOtaFilesData(gridApi);
+});
+
+// ag-grid code end
