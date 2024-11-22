@@ -1,0 +1,190 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Public Sans", sans-serif !important;
+}
+#root {
+  display: flex;
+  position: relative;
+}
+#main {
+  width: 100%;
+  padding: 40px;
+  background-color: #f5f6f7;
+  min-height: 100vh;
+  position: relative;
+}
+/* .mainTopSection {
+    border: 1px solid black;
+} */
+.mainTopSection img {
+  width: 300px;
+  padding: 24px;
+  /* border: 1px solid black; */
+}
+
+.gridAndForm {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  /* border: 1px solid black; */
+  width: 100%;
+}
+.gridAndForm form {
+  width: 20%;
+}
+.gridContainer {
+  width: 80%;
+  /* border: 1px solid black; */
+}
+/* -------------------------------------------------------------------------------- */
+/* Container for the entire form */
+.gridTopSectionBtns {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: white;
+  /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+  margin: 0 auto;
+  width: 100%;
+  max-width: 500px;
+  /* border: 1px solid black; */
+  min-height: 100%;
+}
+
+/* Device select field */
+.deviceSelectField {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  border: 1px solid #e5e7e8;
+  border-radius: 6px;
+  padding: 0px 10px;
+}
+
+.deviceSelectField i {
+  font-size: 20px;
+  color: #4caf50;
+}
+
+.deviceSelectField select {
+  flex: 1;
+  padding: 10px 0px;
+  border-radius: 6px;
+  background-color: #fff;
+  font-size: 14px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+/* Drag-and-drop area */
+#drop-area {
+  width: 100%;
+  border: 2px dashed #e5e7e8;
+  border-radius: 6px;
+  padding: 32px;
+  text-align: center;
+  transition: background-color 0.3s, border-color 0.3s;
+  cursor: pointer;
+}
+#drop-area img {
+  margin-bottom: 20px;
+}
+#drop-area h6 {
+  color: #333;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+#drop-area p {
+  color: #666;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+#drop-area.drag-over {
+  background-color: #e3f7e3;
+  border-color: #4caf50;
+}
+#file-input {
+  display: none;
+}
+label[for="file-input"] {
+  display: none;
+}
+/* File Info Area */
+#file-info {
+  border: 1px solid #e5e7e8;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+}
+#file-info i {
+  color: gray;
+  font-size: 20px;
+}
+#file-info i:hover {
+  color: #ff4d4d;
+}
+.file-info p {
+  margin: 0;
+  color: #333;
+}
+
+.file-info-heading {
+  display: flex;
+  /* border: 1px solid black; */
+  gap: 10px;
+}
+.file-info-heading div {
+  display: flex;
+  flex-direction: column;
+  /* border: 1px solid black; */
+  justify-content: space-between;
+}
+#file-size {
+  color: #848f8b;
+  font-size: 12px;
+}
+
+/* -------------------------------------------------------------------------------- */
+
+.gridTopSection {
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  justify-content: space-between;
+  padding: 24px;
+  background-color: white;
+  border-radius: 8px 8px 0 0;
+}
+.gridTopSection h1 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* ag grid styles start */
+.ag-root-wrapper {
+  border-radius: 0 0 8px 8px;
+  border: none !important;
+}
+.ag-header {
+  /* border: 1px solid black; */
+  background-color: #f8f9f9 !important;
+}
+.ag-header-cell-label {
+  font-family: "Public Sans", sans-serif !important;
+  font-weight: 700;
+}
+
+.ag-cell {
+  font-family: "Public Sans", sans-serif !important;
+  font-size: 14px;
+}
+/* ag grid styles end */
