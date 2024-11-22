@@ -1,3 +1,4 @@
+var gridApi;
 const authToken = localStorage.getItem("authToken");
 const customerId = localStorage.getItem("customerId");
 const fileInput = document.getElementById("file-input");
@@ -69,11 +70,13 @@ async function handleFileUpload(event) {
       // Handle successful response
       fileSuccessMsg.textContent = `File: ${file.name} uploaded successfully for Device ID: ${deviceSelect.value}`;
       fileSuccessMsg.style.display = "block";
-
+      deviceSelect.value = "";
+      resetFile();
+      fetchOtaFilesData(gridApi);
       setTimeout(() => {
         fileSuccessMsg.textContent = "";
         fileSuccessMsg.style.display = "none";
-      }, 3000);
+      }, 5000);
 
       console.log("File uploaded successfully:", await response.json());
     } catch (error) {
@@ -123,6 +126,7 @@ function handleDragLeave(event) {
 }
 
 function handleDrop(event) {
+  fileError.textContent = "";
   event.preventDefault();
   const dropArea = document.getElementById("drop-area");
   dropArea.classList.remove("drag-over");
@@ -141,13 +145,11 @@ function handleDrop(event) {
           ? "File size must be less than 100 KB."
           : "Only .txt files are allowed.";
       fileError.style.display = "block";
-      console.log("only .txt files are allowed");
     }
   }
 }
 
 function triggerFileInput() {
-  const fileInput = document.getElementById("file-input");
   fileInput.click(); // Trigger the hidden input when the area is clicked
 }
 
@@ -162,7 +164,6 @@ function handleFileSelect(event) {
           ? "File size must be less than 100 KB."
           : "Only .txt files are allowed.";
       fileError.style.display = "block";
-      console.log("only .txt files are allowed");
 
       resetFile();
     }
@@ -190,7 +191,6 @@ function formatFileSize(size) {
 }
 
 function resetFile() {
-  const fileInput = document.getElementById("file-input");
   fileInput.value = ""; // Clear the file input
   document.getElementById("file-info").classList.add("d-none");
   document.getElementById("drop-area").classList.remove("d-none");
