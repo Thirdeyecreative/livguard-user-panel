@@ -30,19 +30,17 @@ async function handleFileUpload(event) {
     }
   }
 
-  // Display errors or proceed
   if (errorMessage) {
     fileError.textContent = errorMessage.trim();
     fileError.style.display = "block";
-    fileSuccessMsg.style.display = "none"; // Hide success message
+    fileSuccessMsg.style.display = "none";
   } else {
-    fileError.style.display = "none"; // Hide error message if validation passes
+    fileError.style.display = "none";
     const file = fileInput.files[0];
 
     const formData = new FormData();
     const authToken = localStorage.getItem("authToken");
 
-    // Append the required fields to the FormData
     formData.append("token", authToken);
     formData.append("deviceId", deviceSelect.value);
     formData.append("file", file);
@@ -211,7 +209,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     deviceId.appendChild(option);
     deviceData.forEach((device) => {
       const option = document.createElement("option");
-      option.value = device.id;
+      option.value = device.device_id;
       option.textContent = device.device_id;
       deviceId.appendChild(option);
     });
@@ -341,6 +339,18 @@ const gridOptions = {
     {
       headerName: "Created Tiem",
       field: "createdTime",
+    },
+    {
+      headerName: "Status",
+      field: "status",
+      cellRenderer: (params) => {
+        const isActive = params.value === 1;
+        const styles = isActive
+          ? "border: 1px solid green; background-color: rgba(0, 255, 0, 0.07); color: green; padding: 5px; border-radius: 4px; text-align: center;"
+          : "border: 1px solid red; background-color: rgba(255, 0, 0, 0.07); color: red; padding: 5px; border-radius: 4px; text-align: center;";
+        const statusText = isActive ? "Active" : "Inactive";
+        return `<span style="${styles}">${statusText}</span>`;
+      },
     },
   ],
 
