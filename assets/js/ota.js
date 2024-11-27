@@ -293,6 +293,7 @@ async function fetchOtaFilesData(gridApi) {
       status: item.status,
       id: item.id,
       deviceId: item.device_master_id,
+      deviceIdName: item.device_id,
     }));
     gridApi.setGridOption("rowData", formattedData);
   } catch (error) {
@@ -309,6 +310,10 @@ const gridOptions = {
       maxWidth: 100,
       filter: false,
       suppressAutoSize: true,
+    },
+    {
+      headerName: "Device ID",
+      field: "deviceIdName",
     },
     {
       headerName: "File Name",
@@ -367,7 +372,7 @@ const gridOptions = {
     flex: 1,
     filterParams: {
       debounceMs: 0,
-      buttons: ["reset"],
+      // buttons: ["reset"],
     },
     cellClassRules: {
       "disabled-cell": (params) =>
