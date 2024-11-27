@@ -30,6 +30,38 @@
     />
     <!-- ag-grid -->
     <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
+    <style>
+      #sidebarMenu {
+        /* border: 1px solid black; */
+        width: 16%;
+      }
+      .navImage img {
+        width: 100%;
+        padding: 18px;
+        margin-bottom: 10px;
+      }
+      .nav {
+        /* border: 1px solid black; */
+        display: flex;
+        flex-direction: column;
+        /* gap: 10px; */
+      }
+      .nav-link {
+        font-size: 18px;
+        font-weight: 500;
+        color: #626C70 !important;
+        display: flex;
+        gap: 7px;
+      }
+      .nav-link:hover {
+        color: #0d5e36 !important;
+      }
+      .nav-link.active {
+        color: #0d5e36 !important;
+        /* border: 1px solid black; */
+        background-color: #ecfff6;
+      }
+    </style>
   </head>
   <body>
     <script
@@ -39,10 +71,41 @@
     ></script>
     <div id="root">
       <!-- <nav id="nav"></nav> -->
+      <div id="sidebarMenu">
+        <a href="dashboard.html" class="navImage">
+          <img
+            src="./assets/img/logo.png"
+            class="img-fluid sdbr_logo"
+            alt="logo"
+          />
+        </a>
+        <ul class="nav">
+          <li class="nav-item">
+            <a class="nav-link" href="dashboard.html">
+              <i class="bi bi-house sd_br_icn"></i> Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="alldevices.html">
+              <i class="bi bi-ev-front"></i>
+              All Devices
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="ota.html">
+              <i class="bi bi-upload"></i>
+              OTA Update
+            </a>
+          </li>
+          <li class="nav-item" id="logoutBtn">
+            <a class="nav-link" href="index.html"> Log out </a>
+          </li>
+        </ul>
+      </div>
       <main id="main">
-        <div class="mainTopSection">
+        <!-- <div class="mainTopSection">
           <img src="./assets/img/logo.png" alt="logo" />
-        </div>
+        </div> -->
         <!-- ag-grid table start -->
         <div class="gridAndForm">
           <form onsubmit="handleFileUpload(event)">
@@ -119,3 +182,9 @@
   </body>
 </html>
 <script src="./assets/js/ota.js"></script>
+<script>
+  document.getElementById("logoutBtn").addEventListener("click", function () {
+    localStorage.removeItem("authToken");
+    localStorage.clear();
+  });
+</script>

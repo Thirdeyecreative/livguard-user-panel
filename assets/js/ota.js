@@ -239,14 +239,14 @@ async function fetchDeviceData() {
     const data = await response.json();
 
     if (data.errFlag === 1) {
-      window.location.href = "login.html";
+      window.location.href = "/";
       return null;
     }
 
     return data;
   } catch (error) {
     console.error("Error fetching customer data:", error);
-    window.location.href = "login.html";
+    window.location.href = "/";
     return null;
   }
 }
