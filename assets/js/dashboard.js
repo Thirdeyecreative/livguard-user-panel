@@ -327,7 +327,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function checkAuth() {
   const token = localStorage.getItem("authToken");
   if (!token) {
-    window.location.href = "index.html";
+    window.location.href = "/";
   }
 }
 window.onload = checkAuth;
@@ -336,7 +336,7 @@ window.onload = checkAuth;
 document.getElementById("logoutBtn").addEventListener("click", function () {
   localStorage.removeItem("authToken");
   localStorage.clear();
-  window.location.href = "index.html";
+  window.location.href = "/";
 });
 
 function convertToDecimalDegrees(coordinate) {

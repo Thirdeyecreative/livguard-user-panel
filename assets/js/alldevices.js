@@ -137,11 +137,13 @@ function setThreshold(rowData) {
 
       // Set values for each voltage group
       console.log(volData[0]);
-      
+
       const voltageSettings = volData[0];
       voltageGroups.forEach((group, index) => {
-        document.getElementById(`v${index + 1}_low`).value = voltageSettings[`v${index + 1}_low`] || "";
-        document.getElementById(`v${index + 1}_high`).value = voltageSettings[`v${index + 1}_high`] || "";
+        document.getElementById(`v${index + 1}_low`).value =
+          voltageSettings[`v${index + 1}_low`] || "";
+        document.getElementById(`v${index + 1}_high`).value =
+          voltageSettings[`v${index + 1}_high`] || "";
       });
       //  set values for voltageData
       voltageData.v1_low = voltageSettings.v1_low;
@@ -331,7 +333,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 function checkAuth() {
   const token = localStorage.getItem("authToken");
   if (!token) {
-    window.location.href = "index.html";
+    window.location.href = "/";
   }
 }
 window.onload = checkAuth;
@@ -340,7 +342,7 @@ document.getElementById("logoutBtn").addEventListener("click", function () {
   localStorage.removeItem("authToken");
   localStorage.removeItem("customerId");
   localStorage.clear();
-  window.location.href = "index.html";
+  window.location.href = "/";
 });
 
 // map modal
@@ -428,12 +430,9 @@ function fetchDistance(deviceId, authToken) {
 }
 
 function fetchDeviceIds(customerId, authToken) {
-  fetch(
-    `https://lgdms.livguard.com/devices/all/${customerId}/${authToken}`,
-    {
-      method: "GET",
-    }
-  )
+  fetch(`https://lgdms.livguard.com/devices/all/${customerId}/${authToken}`, {
+    method: "GET",
+  })
     .then((response) => response.json())
     .then((data) => {
       // console.log("Success:", data);
