@@ -326,7 +326,6 @@
       }
 
       /* modal styling end */
-      
     </style>
   </head>
 
@@ -552,6 +551,15 @@
                         <div class="">
                           <h3 class="dh2">Device Diagnostics</h3>
                         </div>
+                        <button
+                          type="button"
+                          data-bs-toggle="modal"
+                          data-bs-target="#ThresholdModal"
+                          class="btn btn-success"
+                          onclick="setThreshold()"
+                        >
+                          <i class="bi bi-plus-square"></i> Set Threshold
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -611,7 +619,7 @@
                       <th class="tbl_h_bg tbl_th_by">T</th>
                       <th class="tbl_h_bg tbl_th_by">Location</th>
                       <th class="tbl_h_bg tbl_th_by">Date/Time</th>
-                      <th class="tbl_h_bg tbl_th_by">Set Threshold</th>
+                      <!-- <th class="tbl_h_bg tbl_th_by">Set Threshold</th> -->
                       <th class="tbl_h_bg tbl_th_by">Action</th>
                     </tr>
                   </thead>

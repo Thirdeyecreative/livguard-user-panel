@@ -299,7 +299,7 @@ document.addEventListener("DOMContentLoaded", async function () {
           <td>${formatDate(row.device_log_date)}<br />${
           row.latest_updated_time
         }</td>
-         <td>
+         <!-- <td>
           <button 
             type="button" 
             data-bs-toggle="modal"
@@ -309,7 +309,7 @@ document.addEventListener("DOMContentLoaded", async function () {
           >
             <i class="bi bi-plus-circle"></i>
           </button>
-          </td>
+          </td> -->
           <td>
             <!--<button class="icon_button"><i style="color: #626C70;" class="bi bi-eye-fill"></i></button>-->
             <a href="https://lgdms.livguard.com/download/csv/today/${
