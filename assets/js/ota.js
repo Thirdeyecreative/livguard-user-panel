@@ -25,9 +25,9 @@ async function handleFileUpload(event) {
     if (file.type !== "text/plain") {
       errorMessage += "Only .txt files are allowed.\n";
     }
-    if (file.size > 102400) {
-      // 100 KB in bytes
-      errorMessage += "File size must be less than 100 KB.\n";
+    if (file.size > 307200) {
+      // 300 KB in bytes
+      errorMessage += "File size must be less than 300 KB.\n";
     }
   }
 
@@ -98,13 +98,13 @@ deviceSelect.addEventListener("change", clearErrorMsg);
 fileInput.addEventListener("change", (event) => {
   const file = event.target.files[0];
   if (file) {
-    if (file.type === "text/plain" && file.size <= 102400) {
+    if (file.type === "text/plain" && file.size <= 307200) {
       updateFileDetails(file); // Update the UI with file details
       clearErrorMsg();
     } else {
       fileError.textContent =
-        file.size > 102400
-          ? "File size must be less than 100 KB."
+        file.size > 307200
+          ? "File size must be less than 300 KB."
           : "Only .txt files are allowed.";
       fileError.style.display = "block";
       console.log("only .txt files are allowed");
@@ -134,15 +134,15 @@ function handleDrop(event) {
   const files = event.dataTransfer.files;
   if (files.length > 0) {
     const file = files[0];
-    if (file.type === "text/plain" && file.size <= 102400) {
+    if (file.type === "text/plain" && file.size <= 307200) {
       updateFileDetails(file); // Update the UI with file details
       const dataTransfer = new DataTransfer();
       dataTransfer.items.add(file);
       fileInput.files = dataTransfer.files; // Sync file input for form submission
     } else {
       fileError.textContent =
-        file.size > 102400
-          ? "File size must be less than 100 KB."
+        file.size > 307200
+          ? "File size must be less than 300 KB."
           : "Only .txt files are allowed.";
       fileError.style.display = "block";
     }
@@ -156,12 +156,12 @@ function triggerFileInput() {
 function handleFileSelect(event) {
   const file = event.target.files[0];
   if (file) {
-    if (file.type === "text/plain" && file.size <= 102400) {
+    if (file.type === "text/plain" && file.size <= 307200) {
       updateFileDetails(file); // Update the UI with file details
     } else {
       fileError.textContent =
-        file.size > 102400
-          ? "File size must be less than 100 KB."
+        file.size > 307200
+          ? "File size must be less than 300 KB."
           : "Only .txt files are allowed.";
       fileError.style.display = "block";
 
@@ -307,13 +307,14 @@ const gridOptions = {
     {
       headerName: "Sl. No",
       field: "index",
-      maxWidth: 100,
+      maxWidth: 80,
       filter: false,
       suppressAutoSize: true,
     },
     {
       headerName: "Device ID",
       field: "deviceIdName",
+      minWidth: 180,
     },
     {
       headerName: "File Name",
@@ -363,6 +364,39 @@ const gridOptions = {
         return `<span style="${styles}">${statusText}</span>`;
       },
     },
+    // {
+    //   headerName: "Upload",
+    //   field: "status",
+    //   filter: false,
+    //   cellRenderer: (params) => {
+    //     if (params.value == 1) {
+    //       return `
+    //       <button class="btn btn-outline-primary btn-sm mt-2" type="button" disabled>
+    //         <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+    //         <span role="status">Uploading...</span>
+    //       </button>
+    //       `;
+    //     } else {
+    //       return `
+    //       <div
+    //         class="mt-2"
+    //         style="
+    //         border: 1px solid green; 
+    //         width: 30px; 
+    //         height: 30px; 
+    //         display: flex; 
+    //         justify-content: center; 
+    //         align-items: center; 
+    //         border-radius: 50%;
+    //         color: green;
+    //         "
+    //       >
+    //         <i class="bi bi-check2" style="font-size: 20px; font-weight: 900;"></i>
+    //       </div>
+    //       `;
+    //     }
+    //   },
+    // },
   ],
 
   defaultColDef: {
