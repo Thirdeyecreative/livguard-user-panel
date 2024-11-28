@@ -392,7 +392,12 @@ function fetchDeviceIds(customerId, authToken) {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log("Success:", data);
+      // console.log("Success:", data);
+      data = data.sort((a, b) => {
+        if (a.device_id < b.device_id) return -1;
+        if (a.device_id > b.device_id) return 1;
+        return 0;
+      });
       optionsTemplet = ``;
       data.forEach((element) => {
         optionsTemplet += `<option value="${element.device_id}">${element.device_id}</option>`;

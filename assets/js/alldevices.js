@@ -437,18 +437,31 @@ function fetchDeviceIds(customerId, authToken) {
     .then((data) => {
       // console.log("Success:", data);
       optionsTemplet = ``;
+      data = data.sort((a, b) => {
+        if (a.device_id < b.device_id) return -1;
+        if (a.device_id > b.device_id) return 1;
+        return 0;
+      });
+      // console.log("sortedData", data);
+
       data.forEach((element) => {
         optionsTemplet += `<option value="${element.device_id}">${element.device_id}</option>`;
       });
       document.getElementById("devices").innerHTML = optionsTemplet;
-      //let currentDeviceId = localStorage.getItem("selectedDeviceId");
-      //if (!currentDeviceId) {
-      //    localStorage.setItem("selectedDeviceId", data[0].device_id);
-      //}
-      //document.getElementById("devices").value =
-      // localStorage.getItem("selectedDeviceId");
+      let currentDeviceId = localStorage.getItem("allDevicesSelectedDeviceId");
+      if (!currentDeviceId) {
+        localStorage.setItem("allDevicesSelectedDeviceId", data[0].device_id);
+      }
+      document.getElementById("devices").value = localStorage.getItem(
+        "allDevicesSelectedDeviceId"
+      );
     })
     .catch((error) => {
       console.error("Error:", error);
     });
 }
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("devices").addEventListener("change", function () {
+    localStorage.setItem("allDevicesSelectedDeviceId", this.value);
+  });
+});
