@@ -136,7 +136,7 @@ function setThreshold(rowData) {
       }
 
       // Set values for each voltage group
-      console.log(volData[0]);
+      // console.log(volData[0]);
 
       const voltageSettings = volData[0];
       voltageGroups.forEach((group, index) => {
@@ -249,7 +249,132 @@ function closeVoltageModal() {
     modal.hide();
   }
 }
+
+async function getTempDataForAlert() {
+  const authToken = localStorage.getItem("authToken");
+  const voltageApiUrl = `https://lgdms.livguard.com/voltage-settings/${authToken}`;
+
+  try {
+    const response = await fetch(voltageApiUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) throw new Error(`Error: ${response.status}`);
+
+    const volData = await response.json();
+    console.log(volData);
+    if (volData.errFlag == 1) {
+      throw new Error(`Error: ${volData.message}`);
+    }
+    if (volData.length === 0) {
+      return null;
+    }
+
+    return volData[0];
+  } catch (error) {
+    console.error("Error fetching voltage settings:", error);
+    return null;
+  }
+}
+function toSetAlert(tempAlerData, params) {
+  const alertDiv = document.createElement("div");
+  if (!tempAlerData) {
+    // If empty, display a gray circle
+    alertDiv.innerHTML = `<span style="display: inline-block; width: 12px; height: 12px; background-color: gray; border-radius: 50%;"></span>`;
+    return;
+  }
+  const { v1, v2, v3, v4 } = params;
+  const checkAlert = (value, low, high) =>
+    value < parseFloat(low) || value > parseFloat(high);
+
+  const isAlert = [
+    checkAlert(v1, tempAlerData.v1_low, tempAlerData.v1_high),
+    checkAlert(v2, tempAlerData.v2_low, tempAlerData.v2_high),
+    checkAlert(v3, tempAlerData.v3_low, tempAlerData.v3_high),
+    checkAlert(v4, tempAlerData.v4_low, tempAlerData.v4_high),
+  ].some(Boolean);
+
+  const allZero = [
+    "v1_high",
+    "v1_low",
+    "v2_high",
+    "v2_low",
+    "v3_high",
+    "v3_low",
+    "v4_high",
+    "v4_low",
+  ].every((key) => parseFloat(tempAlerData[key]) === 0);
+
+  if (allZero) {
+    alertDiv.innerHTML = `<span style="display: inline-block; width: 12px; height: 12px; background-color: gray; border-radius: 50%;"></span>`;
+  } else {
+    alertDiv.innerHTML = `<span style="display: inline-block; width: 12px; height: 12px; background-color: ${
+      isAlert ? "red" : "green"
+    }; border-radius: 50%;"></span>`;
+  }
+
+  return alertDiv;
+}
+
+function currentStatus(date, time) {
+  const deviceLogDate = date; // e.g., "09/10/2024"
+  const logTime = time; // e.g., "23:38"
+  // console.log(date, time);
+
+  // Get the current date and time components separately
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth() + 1; // months are 0-based
+  const currentDay = currentDate.getDate();
+  const currentHours = currentDate.getHours();
+  const currentMinutes = currentDate.getMinutes();
+
+  // Parse the deviceLogDate and time separately
+  const [logDay, logMonth, logYear] = deviceLogDate.split("/").map(Number); // "MM/DD/YYYY" format
+  const [logHours, logMinutes] = logTime.split(":").map(Number); // "HH:MM" format
+
+  let statusText = "Online";
+  let backgroundColor = "rgb(213, 255, 213)"; // Green background
+
+  // Compare the dates
+  if (
+    logYear < currentYear ||
+    (logYear === currentYear && logMonth < currentMonth) ||
+    (logYear === currentYear &&
+      logMonth === currentMonth &&
+      logDay < currentDay)
+  ) {
+    // Device date is in the past
+    statusText = "Offline";
+    backgroundColor = "#EFEFEF";
+  } else if (
+    logYear === currentYear &&
+    logMonth === currentMonth &&
+    logDay === currentDay
+  ) {
+    // If the date is today, compare the times
+    const timeDifference =
+      (currentHours - logHours) * 60 + (currentMinutes - logMinutes); // difference in minutes
+
+    if (timeDifference >= 5) {
+      statusText = "Offline";
+      backgroundColor = "#EFEFEF";
+    }
+  }
+
+  return `<span style="color: ${
+    statusText === "Online" ? "#0D5E36" : "gray"
+  };  border: 1px solid ${
+    statusText === "Online" ? "#0D5E36" : "gray"
+  }; padding: 5px; border-radius: 5px; background-color: ${backgroundColor}">${statusText}</span>`;
+}
 document.addEventListener("DOMContentLoaded", async function () {
+  const tempAlerData = await getTempDataForAlert();
+  console.log({ tempAlerData });
+
   const authToken = localStorage.getItem("authToken");
   const customerId = localStorage.getItem("customerId");
   const tableBody = document.getElementsByTagName("tbody");
@@ -273,11 +398,20 @@ document.addEventListener("DOMContentLoaded", async function () {
         tableRow.innerHTML = `
           <td>${row.device_id}</td>
           <td>
-            <div class="color_box" style="background-color: ${
-              status === "Online" ? "#00B562" : "#626C70"
-            };">
-              <p>${status}</p>
-            </div>
+            ${currentStatus(
+              formatDate(row.device_log_date),
+              row.latest_updated_time
+            )}
+          </td>
+          <td>
+             ${
+               toSetAlert(tempAlerData, {
+                 v1: row.v1,
+                 v2: row.v2,
+                 v3: row.v3,
+                 v4: row.v4,
+               }).outerHTML
+             }
           </td>
           <td>${row.v1}</td>
           <td>${row.v2}</td>
