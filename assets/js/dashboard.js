@@ -125,7 +125,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   const tempAlerData = await getTempDataForAlert();
   console.log({ tempAlerData });
 
-  const dashboardContainer = document.getElementById("dashboardContainer");
   const authToken = localStorage.getItem("authToken");
   const savedDeviceId = localStorage.getItem("selectedDeviceId") || "0001";
   function fetchData(deviceId) {
@@ -150,264 +149,38 @@ document.addEventListener("DOMContentLoaded", async function () {
           temperature: "0",
           speed: "0",
         };
-        dashboardContainer.innerHTML = `
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="ds_ttl_blk">
-          <h1 class="dh1">Device Parameters</h1>
-          <p class="dp1">
-            View/download detailed device parameters for multiple data points
-          </p>
-        </div>
-      </div>
-    </div>
 
-    <div
-      class="container-fluid mb-3"
-      style="border-top: 1px solid #4a5154; opacity: 30%"
-    ></div>
+        // setting data start
+        document.getElementById("statusDiv").innerHTML = `${currentStatus(
+          formatDate(data.device_log_date),
+          data.latest_updated_time
+        )} ${
+          toSetAlert(tempAlerData, {
+            v1: data.v1,
+            v2: data.v2,
+            v3: data.v3,
+            v4: data.v4,
+          }).outerHTML
+        }`; // status and alert
+        document.getElementById("timeAndDate").textContent = `${
+          data.latest_updated_time
+        } ; ${formatDate(data.device_log_date)}`; // time and date
+        document.getElementById("v1").textContent = data.v1; // voltage v1
+        document.getElementById("v2").textContent = data.v2; // voltage v2
+        document.getElementById("v3").textContent = data.v3; // voltage v3
+        document.getElementById("v4").textContent = data.v4; // voltage v4
+        document.getElementById("totalVoltage").textContent = `
+        ${(
+          Number(data.v1) +
+          Number(data.v2) +
+          Number(data.v3) +
+          Number(data.v4)
+        ).toFixed(2)}`; // total voltage
+        document.getElementById("current").textContent = data.current; // current
+        document.getElementById("temperature").textContent = data.temperature; // temperature
+        document.getElementById("speed").textContent = data.speed; // speed
+        // setting data end
 
-    <div class="d-flex justify-content-between">
-      <div class="card-container">
-        <div class="d-flex align-items-center">
-          <h1 class="dh1 lr_margin_10">Customer Name - <span id="vendorName"></span></h1>
-          <div style="display: flex; gap: 8px; justify-content: center; align-items: center; border:1px solid balck">
-            ${currentStatus(
-              formatDate(data.device_log_date),
-              data.latest_updated_time
-            )}
-            ${
-              toSetAlert(tempAlerData, {
-                v1: data.v1,
-                v2: data.v2,
-                v3: data.v3,
-                v4: data.v4,
-              }).outerHTML
-            }
-          </div>
-          
-          <div class="verticle_divide lr_margin_10"></div>
-          <h1 class="dh1 lr_margin_10">Device Id-
-            <select id="devices" name="devices" style="border: none; outline: none">
-              <option value="00000000">________</option>
-              
-            </select>
-          </h1>
-          
-
-          <!--<div class="verticle_divide lr_margin_10"></div>
-          <h1 class="dh1 lr_margin_10">Alert</h1>
-          <div
-            class="round_container lr_margin_10"
-            style="background-color: #00b562"
-          ></div>-->
-          <div class="verticle_divide lr_margin_10"></div>
-          <h1 class="dh1 lr_margin_10">${
-            data.latest_updated_time
-          } ; ${formatDate(data.device_log_date)}</h1>
-        </div>
-      </div>
-      <button class="btn" style="background-color: #00b562; color: white" onclick="window.location.href='alldevices.html'">
-        Export Data Log
-      </button>
-      <a id="downloadLink" style="display: none;"></a>
-    </div>
-
-    <section class="mt-3">
-      <!-- <div class="container-fluid"> -->
-      <div class="row">
-        <div class="col-lg-3">
-          <div class="d-flex dsh_crd_bg">
-            <div class="">
-              <h5 class="ds_crd_p1">Voltage 1 (B1)</h5>
-              <h6 class="ds_crd_h6">${data.v1}</h6>
-              <!-- <p class="ds_crd_p2">
-                  <i class="bi bi-arrow-up-short"></i> 6.7% Increase
-                </p> -->
-            </div>
-            <div class="dsh_crd_icn_blk dsh_icn_bg1">
-              <img
-                src="assets/img/voltage.svg"
-                class="img-fluid dsh_crd_icn"
-                style="margin-top: -8px"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-3">
-          <div class="d-flex dsh_crd_bg">
-            <div class="">
-              <h5 class="ds_crd_p1">Voltage 2 (B2)</h5>
-              <h6 class="ds_crd_h6">${data.v2}</h6>
-            </div>
-            <div class="dsh_crd_icn_blk dsh_icn_bg2">
-              <img
-                src="assets/img/voltage.svg"
-                class="img-fluid dsh_crd_icn"
-                style="margin-top: -8px"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-3">
-          <div class="d-flex dsh_crd_bg">
-            <div class="">
-              <h5 class="ds_crd_p1">Voltage 3 (B3)</h5>
-              <h6 class="ds_crd_h6">${data.v3}</h6>
-            </div>
-            <div class="dsh_crd_icn_blk dsh_icn_bg3">
-              <img
-                src="assets/img/voltage.svg"
-                class="img-fluid dsh_crd_icn"
-                style="margin-top: -8px"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-3">
-          <div class="d-flex dsh_crd_bg">
-            <div class="">
-              <h5 class="ds_crd_p1">Voltage 4 (B4)</h5>
-              <h6 class="ds_crd_h6">${data.v4}</h6>
-            </div>
-            <div class="dsh_crd_icn_blk dsh_icn_bg4">
-              <img
-                src="assets/img/voltage.svg"
-                class="img-fluid dsh_crd_icn"
-                style="margin-top: -8px"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- </div> -->
-    </section>
-
-    <section class="mt-3">
-      <!-- <div class="container-fluid"> -->
-      
-      <div class="row">
-        <div class="col-lg-3">
-          <div class="d-flex dsh_crd_bg">
-            <div class="">
-              <h5 class="ds_crd_p1">Battery BANK VOLTAGE</h5>
-              <h6 class="ds_crd_h6">${(
-                Number(data.v1) +
-                Number(data.v2) +
-                Number(data.v3) +
-                Number(data.v4)
-              ).toFixed(2)}</h6>
-            </div>
-            <div class="dsh_crd_icn_blk dsh_icn_bg4">
-              <img
-                src="assets/img/voltage.svg"
-                class="img-fluid dsh_crd_icn"
-                style="margin-top: -8px"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-3">
-          <div class="d-flex dsh_crd_bg">
-            <div class="">
-              <h5 class="ds_crd_p1">CURRENT (A)</h5>
-              <h6 class="ds_crd_h6">${data.current}</h6>
-            </div>
-            <div class="dsh_crd_icn_blk dsh_icn_bg2">
-              <img
-                src="assets/img/current.svg"
-                class="img-fluid dsh_crd_icn"
-                style="margin-top: -8px"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-3">
-          <div class="d-flex dsh_crd_bg">
-            <div class="">
-              <h5 class="ds_crd_p1">TEMPERATURE (T)</h5>
-              <h6 class="ds_crd_h6">${data.temperature} C</h6>
-            </div>
-            <div class="dsh_crd_icn_blk dsh_icn_bg4">
-              <img
-                src="assets/img/temperature.svg"
-                class="img-fluid dsh_crd_icn"
-                style="margin-top: -8px"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div class="col-lg-3">
-          <div class="d-flex dsh_crd_bg">
-            <div class="">
-              <h5 class="ds_crd_p1">Instantaneous Speed (KMPH)</h5>
-              <h6 class="ds_crd_h6">${data.speed}</h6>
-            </div>
-            <div class="dsh_crd_icn_blk dsh_icn_bg4">
-              <img
-                src="assets/img/speed.svg"
-                class="img-fluid dsh_crd_icn"
-                style="margin-top: -8px"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- </div> -->
-    </section>
-
-    <section class="mt-3">
-      <!-- <div class="container-fluid"> -->
-      <div class="row">
-        <div class="col-lg-3">
-          <div class="d-flex dsh_crd_bg">
-            <div class="">
-              <h5 class="ds_crd_p1">DISTANCE (KM)</h5>
-              <h6 class="ds_crd_h6" id="distance"></h6>
-            </div>
-            <div class="dsh_crd_icn_blk dsh_icn_bg4">
-              <img
-                src="assets/img/distance.svg"
-                class="img-fluid dsh_crd_icn"
-                style="margin-top: -8px"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- </div> -->
-    </section>
-
-    <!-- card -->
-
-    <div
-      class="container-fluid mb-3 mt-3"
-      style="border-top: 1px solid #4a5154; opacity: 30%"
-    ></div>
-
-    <!-- table-top -->
-    <div class="col">
-      <div
-        class="container-fluid"
-        style="
-          background-color: white;
-          padding-left: 5px;
-          padding-top: 3px;
-          padding-bottom: 3px;
-          border-top-left-radius: 8px;
-          border-top-right-radius: 8px;
-        "
-      >
-        <h1 class="dh1">Map View</h1>
-        <div id="map" style="height: 700px; width: 100%;"></div>
-      </div>
-    </div>`;
         customers = ["Livguard", "Mesha", "Race", "Korakso"];
         deviceId = localStorage.getItem("selectedDeviceId");
         customerId = localStorage.getItem("customerId");
@@ -610,7 +383,12 @@ function chargeDischargeDisplay(deviceId, authToken) {
                         <td>${item["Duration - Hours"]}</td>
                         <td>${item["Temperature - Max"]}</td>
                         <td>${item["Temperature - Min"]}</td>
-                        <td>${item["ah"]}</td>
+                        <td>${
+                          item["Cycle Type"] == "Charging" ? item["ah"] : ""
+                        }</td>
+                        <td>${
+                          item["Cycle Type"] == "Discharging" ? item["ah"] : ""
+                        }</td>
                         <td>${item["b1"]}</td>
                         <td>${item["b2"]}</td>
                         <td>${item["b3"]}</td>
