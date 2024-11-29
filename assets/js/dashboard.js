@@ -121,114 +121,107 @@ function toSetAlert(tempAlerData, params) {
   return alertDiv;
 }
 
-document.addEventListener("DOMContentLoaded", async function () {
+document.addEventListener("DOMContentLoaded", async () => {
   const tempAlerData = await getTempDataForAlert();
-  console.log({ tempAlerData });
-
   const authToken = localStorage.getItem("authToken");
   const savedDeviceId = localStorage.getItem("selectedDeviceId") || "0001";
-  function fetchData(deviceId) {
-    // console.log({ deviceId, authToken });
-    fetch(
-      `https://lgdms.livguard.com/dashboard/primary-data/${deviceId}/${authToken}`,
-      {
-        method: "GET",
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Success:", data);
-        data = data[0] || {
-          latest_updated_time: "00:00",
-          device_log_date: Date(),
-          v1: "0",
-          v2: "0",
-          v3: "0",
-          v4: "0",
-          current: "0",
-          temperature: "0",
-          speed: "0",
-        };
+  const customers = ["Livguard", "Mesha", "Race", "Korakso"];
+  const selectDevice = document.getElementById("devices");
 
-        // setting data start
-        document.getElementById("statusDiv").innerHTML = `${currentStatus(
-          formatDate(data.device_log_date),
-          data.latest_updated_time
-        )} ${
-          toSetAlert(tempAlerData, {
-            v1: data.v1,
-            v2: data.v2,
-            v3: data.v3,
-            v4: data.v4,
-          }).outerHTML
-        }`; // status and alert
-        document.getElementById("timeAndDate").textContent = `${
-          data.latest_updated_time
-        } ; ${formatDate(data.device_log_date)}`; // time and date
-        document.getElementById("v1").textContent = data.v1; // voltage v1
-        document.getElementById("v2").textContent = data.v2; // voltage v2
-        document.getElementById("v3").textContent = data.v3; // voltage v3
-        document.getElementById("v4").textContent = data.v4; // voltage v4
-        document.getElementById("totalVoltage").textContent = `
-        ${(
-          Number(data.v1) +
-          Number(data.v2) +
-          Number(data.v3) +
-          Number(data.v4)
-        ).toFixed(2)}`; // total voltage
-        document.getElementById("current").textContent = data.current; // current
-        document.getElementById("temperature").textContent = data.temperature; // temperature
-        document.getElementById("speed").textContent = data.speed; // speed
-        // setting data end
+  // Utility function to fetch data
+  async function fetchData(deviceId) {
+    try {
+      const response = await fetch(
+        `https://lgdms.livguard.com/dashboard/primary-data/${deviceId}/${authToken}`,
+        { method: "GET" }
+      );
+      let data = await response.json();
+      data = data[0] || {
+        latest_updated_time: "00:00",
+        device_log_date: new Date(),
+        v1: "0",
+        v2: "0",
+        v3: "0",
+        v4: "0",
+        current: "0",
+        temperature: "0",
+        speed: "0",
+      };
 
-        customers = ["Livguard", "Mesha", "Race", "Korakso"];
-        deviceId = localStorage.getItem("selectedDeviceId");
-        customerId = localStorage.getItem("customerId");
-        document.getElementById("vendorName").innerHTML =
-          customers[parseInt(customerId) - 1];
-        // console.log("deviceId", deviceId);
-        fetchDistance(deviceId, authToken);
-        fetchDeviceIds(customerId, authToken);
-        initMap(data.lat, data.long);
-        let selectDevice = document.getElementById("devices");
-        selectDevice.addEventListener("change", (event) => {
-          localStorage.setItem("selectedDeviceId", event.target.value);
-          fetchData(event.target.value);
-        });
-        // export data
-        // let exportDataBtn = document.getElementById("exportDataBtn");
-        // exportDataBtn.addEventListener("click", function () {
-        //   // console.log("clicked");
-        //   const link = document.getElementById("downloadLink");
-        //   link.href = `https://lgdms.livguard.com/download/csv/today/${authToken}`;
-        //   link.click();
-        // });
-        // export data
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  }
-  fetchData(savedDeviceId);
-  // setInterval(function () {
-  //   fetchData(savedDeviceId);
-  // }, 30000);
-  setInterval(function () {
-    const currentDeviceId = localStorage.getItem("selectedDeviceId");
-    if (currentDeviceId) {
-      fetchData(currentDeviceId);
+      updateDashboard(data);
+      fetchDistance(deviceId, authToken);
+      fetchDeviceIds(authToken);
+      initMap(data.lat, data.long);
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
-  }, 30000);
-  let selectDevice = document.getElementById("devices");
-  let selectDeviceId = localStorage.getItem("selectedDeviceId");
-  if (selectDeviceId) {
-    selectDevice.value = selectDeviceId;
   }
-  selectDevice.addEventListener("change", (event) => {
-    localStorage.setItem("selectedDeviceId", event.target.value);
-    fetchData(event.target.value);
-    fetchDistance(localStorage.getItem("selectedDeviceId"), authToken);
-  });
+
+  // Update dashboard elements
+  function updateDashboard(data) {
+    document.getElementById("statusDiv").innerHTML = `${currentStatus(
+      formatDate(data.device_log_date),
+      data.latest_updated_time
+    )} ${
+      toSetAlert(tempAlerData, {
+        v1: data.v1,
+        v2: data.v2,
+        v3: data.v3,
+        v4: data.v4,
+      }).outerHTML
+    }`;
+
+    document.getElementById("timeAndDate").textContent = `${
+      data.latest_updated_time
+    } ; ${formatDate(data.device_log_date)}`;
+    document.getElementById("v1").textContent = data.v1;
+    document.getElementById("v2").textContent = data.v2;
+    document.getElementById("v3").textContent = data.v3;
+    document.getElementById("v4").textContent = data.v4;
+
+    document.getElementById("totalVoltage").textContent = (
+      Number(data.v1) +
+      Number(data.v2) +
+      Number(data.v3) +
+      Number(data.v4)
+    ).toFixed(2);
+
+    document.getElementById("current").textContent = data.current;
+    document.getElementById("temperature").textContent = data.temperature;
+    document.getElementById("speed").textContent = data.speed;
+
+    const customerId = localStorage.getItem("customerId");
+    document.getElementById("vendorName").textContent =
+      customers[parseInt(customerId) - 1] || "Unknown Vendor";
+  }
+
+  // Handle device selection changes
+  function handleDeviceChange(event) {
+    const deviceId = event.target.value;
+    localStorage.setItem("selectedDeviceId", deviceId);
+    fetchData(deviceId);
+  }
+
+  // Initialize
+  function initialize() {
+    if (savedDeviceId) {
+      selectDevice.value = savedDeviceId;
+    }
+
+    selectDevice.addEventListener("change", handleDeviceChange);
+
+    // Periodic updates
+    setInterval(() => {
+      const currentDeviceId = localStorage.getItem("selectedDeviceId");
+      if (currentDeviceId) {
+        fetchData(currentDeviceId);
+      }
+    }, 30000);
+
+    fetchData(savedDeviceId);
+  }
+
+  initialize();
 });
 
 // AIzaSyDP1O86frM0Al9QspBpJqN06wTB2AM5yZQ
@@ -296,7 +289,8 @@ function formatDate(dateString) {
   return `${formattedDay}/${formattedMonth}/${year}`;
 }
 
-function fetchDeviceIds(customerId, authToken) {
+function fetchDeviceIds(authToken) {
+  customerId = localStorage.getItem("customerId");
   fetch(`https://lgdms.livguard.com/devices/all/${customerId}/${authToken}`, {
     method: "GET",
   })
