@@ -136,6 +136,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         { method: "GET" }
       );
       let data = await response.json();
+      console.log({data});
+      
       data = data[0] || {
         latest_updated_time: "00:00",
         device_log_date: new Date(),
