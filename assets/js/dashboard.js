@@ -357,7 +357,13 @@ chargeDischargeDisplay(
   localStorage.getItem("selectedDeviceId"),
   localStorage.getItem("authToken")
 );
+function convertTime(hours) {
+  const totalMinutes = hours * 60;
+  const hoursPart = Math.floor(totalMinutes / 60);
+  const minutesPart = Math.round(totalMinutes % 60);
 
+  return `${hoursPart}h, ${minutesPart}min`;
+}
 function chargeDischargeDisplay(deviceId, authToken) {
   var tableBody = document.getElementById("data-table-body");
   tableBody.innerHTML = "";
@@ -380,7 +386,7 @@ function chargeDischargeDisplay(deviceId, authToken) {
                         <td>${item["Date Time - From"]}</td>
                         <td>${item["Date Time - To"]}</td>
                         <td>${item["Distance Travelled"]}</td>
-                        <td>${item["Duration - Hours"]}</td>
+                        <td>${convertTime(item["Duration - Hours"])}</td>
                         <td>${item["Temperature - Max"]}</td>
                         <td>${item["Temperature - Min"]}</td>
                         <td>${
