@@ -13,6 +13,8 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
     />
+    <!-- ag-chart -->
+    <script src="https://cdn.jsdelivr.net/npm/ag-charts-community/dist/umd/ag-charts-community.js"></script>
 
     <style>
       body {
@@ -619,6 +621,32 @@
               style="border-top: 1px solid #4a5154; opacity: 30%"
             ></div>
 
+            <div class="agChartGraphsContainer">
+              <div class="chartConatiner">
+                <button class="refreshChart btn btn-outline-secondary btn-sm">
+                  <i class="bi bi-arrow-clockwise"></i>
+                </button>
+                <div class="myChart" id="batteryVoltageChart"></div>
+              </div>
+              <div class="chartConatiner">
+                <button class="refreshChart btn btn-outline-secondary btn-sm">
+                  <i class="bi bi-arrow-clockwise"></i>
+                </button>
+                <div class="myChart" id="currentChart"></div>
+              </div>
+              <div class="chartConatiner">
+                <button class="refreshChart btn btn-outline-secondary btn-sm">
+                  <i class="bi bi-arrow-clockwise"></i>
+                </button>
+                <div class="myChart" id="bankVoltageChart"></div>
+              </div>
+            </div>
+
+            <div
+              class="container-fluid mb-3 mt-3"
+              style="border-top: 1px solid #4a5154; opacity: 30%"
+            ></div>
+
             <!-- table-top -->
             <div class="col">
               <div
@@ -795,6 +823,408 @@
       });
     </script>
     <!--drag/drop-->
+    <!-- ag-chart start -->
+    <script>
+      // Function to fetch data from the API
+      async function fetchData() {
+        const deviceId = localStorage.getItem("selectedDeviceId");
+        const authToken = localStorage.getItem("authToken");
+        console.log({ deviceId, authToken });
+
+        if (!deviceId || !authToken) {
+          console.error("Device ID or Auth Token not found in local storage.");
+          return [];
+        }
+
+        const url = `https://lgdms.livguard.com/graph/24hours/${deviceId}/${authToken}`;
+
+        try {
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const result = await response.json();
+          const dummy = [
+            {
+              b1: "12.68",
+              b2: "12.63",
+              b3: "12.61",
+              b4: "12.56",
+              charging_ah: "0.0",
+              current: "-2.46",
+              discharging_ah: "0.0312",
+              lat: "2815.2829",
+              log_date: "Mon, 21 Oct 2024 00:00:00 GMT",
+              log_time: "16:48:13",
+              long: "7751.015",
+              row_num: 194,
+              temperature: "37",
+            },
+            {
+              b1: "12.65",
+              b2: "12.60",
+              b3: "12.57",
+              b4: "12.52",
+              charging_ah: "0.0",
+              current: "-0.98",
+              discharging_ah: "0.2168",
+              lat: "2815.3472",
+              log_date: "Mon, 21 Oct 2024 00:00:00 GMT",
+              log_time: "16:49:12",
+              long: "7751.0513",
+              row_num: 195,
+              temperature: "37",
+            },
+            {
+              b1: "12.63",
+              b2: "12.54",
+              b3: "12.55",
+              b4: "12.48",
+              charging_ah: "0.0",
+              current: "-0.69",
+              discharging_ah: "0.2781",
+              lat: "2815.4106",
+              log_date: "Mon, 21 Oct 2024 00:00:00 GMT",
+              log_time: "16:50:13",
+              long: "7751.1003",
+              row_num: 196,
+              temperature: "37",
+            },
+            {
+              b1: "11.52",
+              b2: "11.89",
+              b3: "11.69",
+              b4: "11.93",
+              charging_ah: "0.0",
+              current: "-54.52",
+              discharging_ah: "0.2559",
+              lat: "2815.4883",
+              log_date: "Mon, 21 Oct 2024 00:00:00 GMT",
+              log_time: "16:51:12",
+              long: "7751.1686",
+              row_num: 197,
+              temperature: "37",
+            },
+            {
+              b1: "12.61",
+              b2: "12.55",
+              b3: "12.54",
+              b4: "12.49",
+              charging_ah: "0.0",
+              current: "-2.33",
+              discharging_ah: "0.0999",
+              lat: "2815.5036",
+              log_date: "Mon, 21 Oct 2024 00:00:00 GMT",
+              log_time: "16:52:12",
+              long: "7751.183",
+              row_num: 198,
+              temperature: "37",
+            },
+            {
+              b1: "12.65",
+              b2: "12.56",
+              b3: "12.57",
+              b4: "12.50",
+              charging_ah: "0.0",
+              current: "-0.58",
+              discharging_ah: "0.2131",
+              lat: "2815.3792",
+              log_date: "Mon, 21 Oct 2024 00:00:00 GMT",
+              log_time: "16:54:12",
+              long: "7751.081",
+              row_num: 199,
+              temperature: "37",
+            },
+          ];
+          console.log({ datas: processApiData(dummy), result });
+
+          return processApiData(result);
+        } catch (error) {
+          console.error("Error fetching data from API:", error);
+          return [];
+        }
+      }
+
+      // Function to process API data into the required format
+      function processApiData(apiData) {
+        return apiData
+          .map((entry) => {
+            // Calculate bank voltage as the sum of b1, b2, b3, and b4
+            const bankVoltage =
+              parseFloat(entry.b1) +
+              parseFloat(entry.b2) +
+              parseFloat(entry.b3) +
+              parseFloat(entry.b4);
+
+            // Extract log_date and log_time separately
+            const logDate = new Date(entry.log_date);
+            const logTimeParts = entry.log_time.split(":");
+
+            // Construct a valid date string in ISO format
+            // Assuming log_time is in HH:mm:ss format
+            logDate.setHours(logTimeParts[0], logTimeParts[1], logTimeParts[2]);
+
+            // Check if the date is valid
+            if (isNaN(logDate.getTime())) {
+              console.error(
+                "Invalid date:",
+                entry.log_date + " " + entry.log_time
+              );
+              return null; // or handle it according to your logic
+            }
+
+            // Format the time to desired format (hh:mm:ss AM/PM)
+            const logTime = logDate.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: true,
+            });
+
+            return {
+              log_time: logTime,
+              b1: parseFloat(entry.b1),
+              b2: parseFloat(entry.b2),
+              b3: parseFloat(entry.b3),
+              b4: parseFloat(entry.b4),
+              current: parseFloat(entry.current),
+              bank_voltage: parseFloat(bankVoltage.toFixed(2)),
+            };
+          })
+          .filter((entry) => entry !== null); // Remove any null entries from the array
+      }
+
+      // Function to update the charts with new data
+      async function updateCharts() {
+        document.getElementById("batteryVoltageChart").innerHTML = "";
+        document.getElementById("currentChart").innerHTML = "";
+        document.getElementById("bankVoltageChart").innerHTML = "";
+
+        const data = await fetchData();
+        const totalDataPoints = data.length;
+        const dataToShow = totalDataPoints < 60 ? totalDataPoints : 60;
+        const maxValue = totalDataPoints;
+        const minValue =
+          totalDataPoints > dataToShow ? totalDataPoints - dataToShow : 0;
+
+        if (data.length === 0) {
+          console.log("No data available to display on the charts.");
+        }
+
+        // First Chart: Battery Voltages (b1, b2, b3, b4)
+        const batteryVoltageOptions = {
+          container: document.getElementById("batteryVoltageChart"),
+          title: {
+            text: "Individual Battery Voltage",
+          },
+          data: data,
+          series: [
+            {
+              type: "line",
+              xKey: "log_time",
+              yKey: "b1",
+              yName: "b1",
+              stroke: "#f56a79",
+              interpolation: { type: "smooth" },
+            },
+            {
+              type: "line",
+              xKey: "log_time",
+              yKey: "b2",
+              yName: "b2",
+              stroke: "#6794dc",
+              interpolation: { type: "smooth" },
+            },
+            {
+              type: "line",
+              xKey: "log_time",
+              yKey: "b3",
+              yName: "b3",
+              stroke: "#7cb342",
+              interpolation: { type: "smooth" },
+            },
+            {
+              type: "line",
+              xKey: "log_time",
+              yKey: "b4",
+              yName: "b4",
+              stroke: "#ffca28",
+              interpolation: { type: "smooth" },
+            },
+          ],
+          axes: [
+            {
+              type: "category",
+              position: "bottom",
+              title: { text: "Time (hh:mm:ss)" },
+            },
+            {
+              type: "number",
+              position: "left",
+              title: { text: "Voltage (V)" },
+            },
+          ],
+          navigator: {
+            enabled: true,
+            height: 40,
+            min: minValue / totalDataPoints,
+            max: maxValue / totalDataPoints,
+            mask: {
+              fill: "#0d5e36",
+              stroke: "#0d5e36",
+            },
+            minHandle: {
+              fill: "#0d5e36",
+              stroke: "#0d5e36",
+              width: 10,
+              height: 20,
+            },
+            maxHandle: {
+              fill: "#0d5e36",
+              stroke: "#0d5e36",
+              width: 10,
+              height: 20,
+            },
+          },
+          interactions: {
+            tooltip: {
+              enabled: true,
+            },
+          },
+        };
+        agCharts.AgCharts.create(batteryVoltageOptions);
+
+        // Second Chart: Current
+        const currentOptions = {
+          container: document.getElementById("currentChart"),
+          title: {
+            text: "Current",
+          },
+          data: data,
+          series: [
+            {
+              type: "line",
+              xKey: "log_time",
+              yKey: "current",
+              yName: "Current (A)",
+              stroke: "#8e44ad",
+              interpolation: { type: "smooth" },
+            },
+          ],
+          axes: [
+            {
+              type: "category",
+              position: "bottom",
+              title: { text: "Time (hh:mm:ss)" },
+            },
+            {
+              type: "number",
+              position: "left",
+              title: { text: "Current (A)" },
+            },
+          ],
+          navigator: {
+            enabled: true,
+            height: 40,
+            min: minValue / totalDataPoints,
+            max: maxValue / totalDataPoints,
+            mask: {
+              fill: "#0d5e36",
+              stroke: "#0d5e36",
+            },
+            minHandle: {
+              fill: "#0d5e36",
+              stroke: "#0d5e36",
+              width: 10,
+              height: 20,
+            },
+            maxHandle: {
+              fill: "#0d5e36",
+              stroke: "#0d5e36",
+              width: 10,
+              height: 20,
+            },
+          },
+          interactions: {
+            tooltip: {
+              enabled: true,
+            },
+          },
+        };
+        agCharts.AgCharts.create(currentOptions);
+
+        // Third Chart: Bank Voltage (Sum of b1, b2, b3, b4)
+        const bankVoltageOptions = {
+          container: document.getElementById("bankVoltageChart"),
+          title: {
+            text: "Bank Voltage",
+          },
+          data: data,
+          series: [
+            {
+              type: "line",
+              xKey: "log_time",
+              yKey: "bank_voltage",
+              yName: "Bank Voltage",
+              stroke: "#e74c3c",
+              interpolation: { type: "smooth" },
+            },
+          ],
+          axes: [
+            {
+              type: "category",
+              position: "bottom",
+              title: { text: "Time (hh:mm:ss)" },
+            },
+            {
+              type: "number",
+              position: "left",
+              title: { text: "Voltage (V)" },
+            },
+          ],
+          navigator: {
+            enabled: true,
+            height: 40,
+            min: minValue / totalDataPoints,
+            max: maxValue / totalDataPoints,
+            mask: {
+              fill: "#0d5e36",
+              stroke: "#0d5e36",
+            },
+            minHandle: {
+              fill: "#0d5e36",
+              stroke: "#0d5e36",
+              width: 10,
+              height: 20,
+            },
+            maxHandle: {
+              fill: "#0d5e36",
+              stroke: "#0d5e36",
+              width: 10,
+              height: 20,
+            },
+          },
+          interactions: {
+            tooltip: {
+              enabled: true,
+            },
+          },
+        };
+        agCharts.AgCharts.create(bankVoltageOptions);
+      }
+
+      updateCharts();
+
+      // Refresh charts every minute
+      // var graphIntervalId;
+      // graphIntervalId = setInterval(updateCharts, 30000);
+      let refreshButtons = document.querySelectorAll(".refreshChart");
+
+      for (let i = 0; i < refreshButtons.length; i++) {
+        refreshButtons[i].addEventListener("click", updateCharts);
+      }
+    </script>
+    <!-- ag-chart end -->
   </body>
 </html>
 <script src="./assets/js/dashboard.js"></script>
