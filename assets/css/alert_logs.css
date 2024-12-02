@@ -1,0 +1,126 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Public Sans", sans-serif !important;
+}
+#root {
+  display: flex;
+  position: relative;
+}
+#main {
+  width: 84%;
+  padding: 40px;
+  background-color: #f5f6f7;
+  min-height: 100vh;
+}
+.vLowAndHigh{
+    display: flex;
+    gap: 24px;
+    padding: 16px 24px;
+    background-color: white;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    /* border: 1px solid lightgray; */
+    background-color: #ecfff6;
+}
+.vLowAndHigh h5{
+    margin: 0 40px 0 0;
+}
+.vLowAndHigh p{
+    margin: 0;
+    font-weight: bold;
+    border: 1px solid lightgray;
+    border-radius: 4px;
+    padding: 2px 4px;
+}
+.vLowAndHigh span{
+    font-weight: normal;
+}
+.gridTopSection {
+  /* border: 1px solid black; */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px;
+  background-color: white;
+  border-radius: 8px 8px 0 0;
+}
+.gridTopSection h1 {
+  font-size: 20px;
+  font-weight: 600;
+}
+.customerName {
+  /* border: 1px solid black; */
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+}
+.customerName h1 {
+  /* border: 1px solid red; */
+  /* width: 100%; */
+  margin: 0;
+}
+
+.alertLogForm {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  /* border: 1px solid black; */
+}
+.alertLogForm button {
+  min-width: 100px;
+}
+.alertLogForm label {
+  font-size: 16px;
+  font-weight: 500;
+  /* width: 100px; */
+  margin: 0;
+}
+
+.alertLogDateRange {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.alertLogDateRange input {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 14px;
+  background-color: #f9f9f9;
+}
+.alertLogDateRange button {
+  margin-left: auto;
+}
+
+.alertLogDateRange select {
+  border: none;
+  outline: none;
+  font-size: 16px;
+  font-weight: 500;
+  height: 30px;
+  background-color: #efefef;
+  border-radius: 4px;
+  padding: 0 8px;
+}
+/* ag grid styles start */
+.ag-root-wrapper {
+  border-radius: 0 0 8px 8px;
+  border: none !important;
+}
+.ag-header {
+  /* border: 1px solid black; */
+  background-color: #f8f9f9 !important;
+}
+.ag-header-cell-label {
+  font-family: "Public Sans", sans-serif !important;
+  font-weight: 700;
+}
+
+.ag-cell {
+  font-family: "Public Sans", sans-serif !important;
+  font-size: 14px;
+}
+/* ag grid styles end */
