@@ -76,6 +76,14 @@ function triggerToast(message, type = "error") {
   const toast = new bootstrap.Toast(toastElement);
   toast.show();
 }
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+
+  return `${day}-${month}-${year}`;
+}
 async function handleFormSubmit(event) {
   event.preventDefault();
   //  console.log(voltageThreshold);
@@ -153,6 +161,7 @@ async function handleFormSubmit(event) {
     const formattedData = filterdData.map((item, index) => ({
       ...item,
       index: index + 1,
+      device_log_date: formatDate(item.device_log_date),
     }));
     gridApi.setGridOption("rowData", formattedData);
   } catch (error) {
@@ -227,6 +236,36 @@ const gridOptions = {
     {
       headerName: "V4",
       field: "b4",
+    },
+    {
+      headerName: "Created Date",
+      field: "device_log_date",
+      filter: "agDateColumnFilter",
+      maxWidth: 300,
+      filterParams: {
+        comparator: (filterLocalDateAtMidnight, cellValue) => {
+          const dateParts = cellValue.split("-");
+          const year = Number(dateParts[2]);
+          const month = Number(dateParts[1]) - 1;
+          const day = Number(dateParts[0]);
+          const cellDate = new Date(year, month, day);
+          // Compare dates
+          if (cellDate < filterLocalDateAtMidnight) {
+            return -1;
+          } else if (cellDate > filterLocalDateAtMidnight) {
+            return 1;
+          } else {
+            return 0;
+          }
+        },
+      },
+    },
+    {
+      headerName: "Created Tiem",
+      field: "device_log_time",
+      filter: false,
+      sortable: false,
+      maxWidth: 200,
     },
   ],
   defaultColDef: {
