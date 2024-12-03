@@ -451,7 +451,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             <!--<button class="icon_button"><i style="color: #626C70;" class="bi bi-eye-fill"></i></button>-->
             <a href="https://lgdms.livguard.com/download/csv/today/${
               row.device_id
-            }/${authToken}" download><button class="icon_button"><i style="color: #626C70;" class="bi bi-download"></i></button></a>
+            }/${authToken}" download><button class="btn download-button"><i style="color: #626C70;" class="bi bi-download"></i></button></a>
           </td>
         `;
         fetchDistance(row.device_id, authToken);
