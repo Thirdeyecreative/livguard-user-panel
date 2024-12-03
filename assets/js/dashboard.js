@@ -127,6 +127,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const savedDeviceId = localStorage.getItem("selectedDeviceId") || "0001";
   const customers = ["Livguard", "Mesha", "Race", "Korakso"];
   const selectDevice = document.getElementById("devices");
+  fetchDeviceIds(authToken);
 
   // Utility function to fetch data
   async function fetchData(deviceId) {
@@ -152,7 +153,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       updateDashboard(data);
       fetchDistance(deviceId, authToken);
-      fetchDeviceIds(authToken);
       initMap(data.lat, data.long);
     } catch (error) {
       console.error("Error fetching data:", error);

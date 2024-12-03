@@ -375,12 +375,14 @@ function currentStatus(date, time) {
   }; padding: 5px; border-radius: 5px; background-color: ${backgroundColor}">${statusText}</span>`;
 }
 document.addEventListener("DOMContentLoaded", async function () {
+  
   const tempAlerData = await getTempDataForAlert();
   console.log({ tempAlerData });
-
+  
   const authToken = localStorage.getItem("authToken");
   const customerId = localStorage.getItem("customerId");
   const tableBody = document.getElementsByTagName("tbody");
+  fetchDeviceIds(customerId, authToken);
   // console.log(authToken);
   async function fetchData() {
     try {
@@ -457,7 +459,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         fetchDistance(row.device_id, authToken);
         tableBody[0].appendChild(tableRow);
       }
-      fetchDeviceIds(customerId, authToken);
     } catch (error) {
       console.log(error);
     }
