@@ -13,29 +13,29 @@ body {
   background-color: #f5f6f7;
   min-height: 100vh;
 }
-.vLowAndHigh{
-    display: flex;
-    gap: 24px;
-    padding: 16px 24px;
-    background-color: white;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    /* border: 1px solid lightgray; */
-    background-color: #ecfff6;
+.vLowAndHigh {
+  display: flex;
+  gap: 24px;
+  padding: 16px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #f8f9f9;
+  border-bottom: 1px solid #ddddde;
+  /* border: 1px solid lightgray; */
 }
-.vLowAndHigh h5{
-    margin: 0 40px 0 0;
+.vLowAndHigh h5 {
+  margin: 0 40px 0 0;
 }
-.vLowAndHigh p{
-    margin: 0;
-    font-weight: bold;
-    border: 1px solid lightgray;
-    border-radius: 4px;
-    padding: 2px 4px;
+.vLowAndHigh p {
+  margin: 0;
+  font-weight: bold;
+  border: 1px solid #ddddde;
+  border-radius: 4px;
+  padding: 2px 4px;
 }
-.vLowAndHigh span{
-    font-weight: normal;
+.vLowAndHigh span {
+  font-weight: normal;
 }
 .gridTopSection {
   /* border: 1px solid black; */

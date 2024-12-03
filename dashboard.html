@@ -266,15 +266,13 @@
 
     <div class="container-fluid">
       <div class="row">
-        <div
-          class="sidebar border border-right col-md-3 col-lg-2 p-0 sd_br_h"
-          style="width: 16%"
-        >
+        <div class="sidebar col-md-3 col-lg-2 p-0 sd_br_h" style="width: 16%">
           <div
             class="offcanvas-md offcanvas-end"
             tabindex="-1"
             id="sidebarMenu"
             aria-labelledby="sidebarMenuLabel"
+            style="min-height: 100vh; position: sticky; top: 0"
           >
             <div class="offcanvas-header">
               <h5 class="offcanvas-title" id="sidebarMenuLabel">
@@ -356,6 +354,7 @@
                             </li> -->
                 <li class="nav-item" id="logoutBtn">
                   <a class="nav-link d-flex align-items-center gap-2" href="">
+                    <i class="bi bi-power"></i>
                     Log out
                   </a>
                 </li>
@@ -458,7 +457,7 @@
               <!-- <div class="container-fluid"> -->
               <div class="row">
                 <div class="col-lg-3">
-                  <div class="d-flex dsh_crd_bg">
+                  <div class="d-flex dsh_crd_bg align-items-center">
                     <div class="">
                       <h5 class="ds_crd_p1">Voltage 1 (B1)</h5>
                       <h6 id="v1" class="ds_crd_h6"></h6>
@@ -466,59 +465,87 @@
                   <i class="bi bi-arrow-up-short"></i> 6.7% Increase
                 </p> -->
                     </div>
-                    <div class="dsh_crd_icn_blk dsh_icn_bg1">
+                    <div
+                      style="
+                        border: 1px solid #b9c907;
+                        border-radius: 50%;
+                        width: 50px;
+                        height: 50px;
+                      "
+                    >
                       <img
                         src="assets/img/voltage.svg"
                         class="img-fluid dsh_crd_icn"
-                        style="margin-top: -8px"
+                        style="width: 100%"
                       />
                     </div>
                   </div>
                 </div>
 
                 <div class="col-lg-3">
-                  <div class="d-flex dsh_crd_bg">
+                  <div class="d-flex dsh_crd_bg align-items-center">
                     <div class="">
                       <h5 class="ds_crd_p1">Voltage 2 (B2)</h5>
                       <h6 id="v2" class="ds_crd_h6"></h6>
                     </div>
-                    <div class="dsh_crd_icn_blk dsh_icn_bg2">
+                    <div
+                      style="
+                        border: 1px solid #b9c907;
+                        border-radius: 50%;
+                        width: 50px;
+                        height: 50px;
+                      "
+                    >
                       <img
                         src="assets/img/voltage.svg"
                         class="img-fluid dsh_crd_icn"
-                        style="margin-top: -8px"
+                        style="width: 100%"
                       />
                     </div>
                   </div>
                 </div>
 
                 <div class="col-lg-3">
-                  <div class="d-flex dsh_crd_bg">
+                  <div class="d-flex dsh_crd_bg align-items-center">
                     <div class="">
                       <h5 class="ds_crd_p1">Voltage 3 (B3)</h5>
                       <h6 id="v3" class="ds_crd_h6"></h6>
                     </div>
-                    <div class="dsh_crd_icn_blk dsh_icn_bg3">
+                    <div
+                      style="
+                        border: 1px solid #b9c907;
+                        border-radius: 50%;
+                        width: 50px;
+                        height: 50px;
+                      "
+                    >
                       <img
                         src="assets/img/voltage.svg"
                         class="img-fluid dsh_crd_icn"
-                        style="margin-top: -8px"
+                        style="width: 100%"
                       />
                     </div>
                   </div>
                 </div>
 
                 <div class="col-lg-3">
-                  <div class="d-flex dsh_crd_bg">
+                  <div class="d-flex dsh_crd_bg align-items-center">
                     <div class="">
                       <h5 class="ds_crd_p1">Voltage 4 (B4)</h5>
                       <h6 id="v4" class="ds_crd_h6"></h6>
                     </div>
-                    <div class="dsh_crd_icn_blk dsh_icn_bg4">
+                    <div
+                      style="
+                        border: 1px solid #b9c907;
+                        border-radius: 50%;
+                        width: 50px;
+                        height: 50px;
+                      "
+                    >
                       <img
                         src="assets/img/voltage.svg"
                         class="img-fluid dsh_crd_icn"
-                        style="margin-top: -8px"
+                        style="width: 100%"
                       />
                     </div>
                   </div>
@@ -532,64 +559,92 @@
 
               <div class="row">
                 <div class="col-lg-3">
-                  <div class="d-flex dsh_crd_bg">
+                  <div class="d-flex dsh_crd_bg align-items-center">
                     <div class="">
                       <h5 class="ds_crd_p1">Battery BANK VOLTAGE</h5>
                       <h6 id="totalVoltage" class="ds_crd_h6"></h6>
                     </div>
-                    <div class="dsh_crd_icn_blk dsh_icn_bg4">
+                    <div
+                      style="
+                        border: 1px solid #b9c907;
+                        border-radius: 50%;
+                        width: 50px;
+                        height: 50px;
+                      "
+                    >
                       <img
                         src="assets/img/voltage.svg"
                         class="img-fluid dsh_crd_icn"
-                        style="margin-top: -8px"
+                        style="width: 100%"
                       />
                     </div>
                   </div>
                 </div>
 
                 <div class="col-lg-3">
-                  <div class="d-flex dsh_crd_bg">
+                  <div class="d-flex dsh_crd_bg align-items-center">
                     <div class="">
                       <h5 class="ds_crd_p1">CURRENT (A)</h5>
                       <h6 id="current" class="ds_crd_h6"></h6>
                     </div>
-                    <div class="dsh_crd_icn_blk dsh_icn_bg2">
+                    <div
+                      style="
+                        border: 1px solid #0d5e36;
+                        border-radius: 50%;
+                        width: 50px;
+                        height: 50px;
+                      "
+                    >
                       <img
                         src="assets/img/current.svg"
                         class="img-fluid dsh_crd_icn"
-                        style="margin-top: -8px"
+                        style="width: 100%"
                       />
                     </div>
                   </div>
                 </div>
 
                 <div class="col-lg-3">
-                  <div class="d-flex dsh_crd_bg">
+                  <div class="d-flex dsh_crd_bg align-items-center">
                     <div class="">
                       <h5 class="ds_crd_p1">TEMPERATURE (T)</h5>
                       <h6 id="temperature" class="ds_crd_h6"></h6>
                     </div>
-                    <div class="dsh_crd_icn_blk dsh_icn_bg4">
+                    <div
+                      style="
+                        border: 1px solid #c38e3e;
+                        border-radius: 50%;
+                        width: 50px;
+                        height: 50px;
+                      "
+                    >
                       <img
                         src="assets/img/temperature.svg"
                         class="img-fluid dsh_crd_icn"
-                        style="margin-top: -8px"
+                        style="width: 100%"
                       />
                     </div>
                   </div>
                 </div>
 
                 <div class="col-lg-3">
-                  <div class="d-flex dsh_crd_bg">
+                  <div class="d-flex dsh_crd_bg align-items-center">
                     <div class="">
                       <h5 class="ds_crd_p1">Instantaneous Speed (KMPH)</h5>
                       <h6 id="speed" class="ds_crd_h6"></h6>
                     </div>
-                    <div class="dsh_crd_icn_blk dsh_icn_bg4">
+                    <div
+                      style="
+                        border: 1px solid #3a3a38;
+                        border-radius: 50%;
+                        width: 50px;
+                        height: 50px;
+                      "
+                    >
                       <img
                         src="assets/img/speed.svg"
                         class="img-fluid dsh_crd_icn"
-                        style="margin-top: -8px"
+                        style="width: 100%"
                       />
                     </div>
                   </div>
@@ -602,16 +657,23 @@
               <!-- <div class="container-fluid"> -->
               <div class="row">
                 <div class="col-lg-3">
-                  <div class="d-flex dsh_crd_bg">
+                  <div class="d-flex dsh_crd_bg align-items-center">
                     <div class="">
                       <h5 class="ds_crd_p1">DISTANCE (KM)</h5>
                       <h6 class="ds_crd_h6" id="distance"></h6>
                     </div>
-                    <div class="dsh_crd_icn_blk dsh_icn_bg4">
+                    <div
+                      style="
+                        border: 1px solid #37612b;
+                        border-radius: 50%;
+                        width: 50px;
+                        height: 50px;
+                      "
+                    >
                       <img
                         src="assets/img/distance.svg"
                         class="img-fluid dsh_crd_icn"
-                        style="margin-top: -8px"
+                        style="width: 100%"
                       />
                     </div>
                   </div>
