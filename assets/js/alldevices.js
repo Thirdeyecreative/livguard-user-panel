@@ -375,10 +375,9 @@ function currentStatus(date, time) {
   }; padding: 5px; border-radius: 5px; background-color: ${backgroundColor}">${statusText}</span>`;
 }
 document.addEventListener("DOMContentLoaded", async function () {
-  
   const tempAlerData = await getTempDataForAlert();
   console.log({ tempAlerData });
-  
+
   const authToken = localStorage.getItem("authToken");
   const customerId = localStorage.getItem("customerId");
   const tableBody = document.getElementsByTagName("tbody");
@@ -431,24 +430,14 @@ document.addEventListener("DOMContentLoaded", async function () {
           <td>${row.current}</td>
           <td id="distance${row.device_id}"></td>
           <td>${row.temperature}</td>
+          <td>${row.current > 5 ? 0 : row.speed}</td>
+          <td>${formatDate(row.device_log_date)}<br />${
+          row.latest_updated_time
+        }</td>
           <!--<td><button class="btn btn_local_style">View</button></td>-->
           <td><button class="btn btn_local_style" onclick="openMapModal(${
             row.lat
           }, ${row.long})">View</button>
-          <td>${formatDate(row.device_log_date)}<br />${
-          row.latest_updated_time
-        }</td>
-         <!-- <td>
-          <button 
-            type="button" 
-            data-bs-toggle="modal"
-            data-bs-target="#ThresholdModal"
-            class="btn btn-light" 
-            onclick='setThreshold(${JSON.stringify(row)})'
-          >
-            <i class="bi bi-plus-circle"></i>
-          </button>
-          </td> -->
           <td>
             <!--<button class="icon_button"><i style="color: #626C70;" class="bi bi-eye-fill"></i></button>-->
             <a href="https://lgdms.livguard.com/download/csv/today/${

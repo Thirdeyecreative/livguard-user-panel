@@ -190,7 +190,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     document.getElementById("current").textContent = data.current;
     document.getElementById("temperature").textContent = data.temperature;
-    document.getElementById("speed").textContent = data.speed;
+    document.getElementById("speed").textContent =
+      data.current > 5 ? 0 : data.speed;
 
     const customerId = localStorage.getItem("customerId");
     document.getElementById("vendorName").textContent =
