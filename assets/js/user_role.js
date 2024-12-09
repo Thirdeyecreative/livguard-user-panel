@@ -268,6 +268,7 @@ const handlechange = (event) => {
   userData[event.target.name] = event.target.value;
 };
 async function fetchUsers(gridApi) {
+  const modulesData = await fetchModulesData();
   const authToken = localStorage.getItem("authToken");
   const apiUrl = `https://lgdms.livguard.com/appusers/all/${authToken}`;
 
@@ -297,6 +298,14 @@ async function fetchUsers(gridApi) {
       email: item.email,
       id: item.id,
       module_permitted: JSON.parse(item.module_list),
+      module_name: modulesData.map((module)=>{
+         isAvalilable = JSON.parse(item.module_list).some(
+          (moduleId) => moduleId == module.id
+        );
+        if(isAvalilable){
+          return module.module
+        }
+      }),
       lock_user: item.lock_user,
     }));
     console.log({ formattedData });
@@ -359,10 +368,20 @@ const gridOptions = {
       headerName: "Email",
       field: "email",
     },
-    // {
-    //   headerName: "Customer Name",
-    //   field: "customerName",
-    // },
+    {
+      headerName: "Modules Permitted",
+      field: "module_name",
+      valueFormatter: function (params) {
+        return params.value.join(", ");
+      },
+      cellRenderer: function (params) {
+        return `<div>
+              <ol>
+                ${params.value.map((item) => `<li>${item}</li>`).join("")}
+              </ol>
+            </div>`;
+      },
+    },
     {
       headerName: "Status",
       field: "status",
@@ -408,7 +427,9 @@ const gridOptions = {
   },
   domLayout: "autoHeight",
   getRowHeight: function (params) {
-    return 80;
+    return params.data.module_permitted.length > 1
+      ? params.data.module_permitted.length * 45
+      : 80;
   },
   pagination: true,
   paginationPageSize: 10,
