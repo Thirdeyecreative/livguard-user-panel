@@ -298,14 +298,14 @@ async function fetchUsers(gridApi) {
       email: item.email,
       id: item.id,
       module_permitted: JSON.parse(item.module_list),
-      module_name: modulesData.map((module)=>{
-         isAvalilable = JSON.parse(item.module_list).some(
-          (moduleId) => moduleId == module.id
-        );
-        if(isAvalilable){
-          return module.module
-        }
-      }),
+      module_name: modulesData
+        .map((module) => {
+          const isAvailable = JSON.parse(item.module_list).some(
+            (moduleId) => moduleId == module.id
+          );
+          return isAvailable ? module.module : null; // Return null for unavailable modules
+        })
+        .filter((module) => module !== null),
       lock_user: item.lock_user,
     }));
     console.log({ formattedData });
