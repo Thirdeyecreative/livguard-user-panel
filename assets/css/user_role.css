@@ -1,0 +1,203 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Public Sans", sans-serif !important;
+}
+#root {
+  display: flex;
+  position: relative;
+}
+#main {
+  width: 84%;
+  padding: 40px;
+  background-color: #f5f6f7;
+}
+.mainTopSection h1 {
+  font-size: 20px;
+  font-weight: 600;
+}
+.mainTopSection p {
+  font-size: 14px;
+}
+/* switch styling start */
+/* From Uiverse.io by arghyaBiswasDev */
+/* The switch - the box around the slider */
+.switch {
+  font-size: 17px;
+  position: relative;
+  display: inline-block;
+  width: 3.1em;
+  height: 1.6em;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 10px;
+  left: 0;
+  right: 0;
+  bottom: -10px;
+  background-color: #fff;
+  border: 1px solid #fff;
+  transition: 0.4s;
+  border-radius: 30px;
+  box-shadow: 0px 6px 8px 3px rgba(0, 0, 0, 0.1) inset;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 1em;
+  width: 1em;
+  border-radius: 20px;
+  left: 0.27em;
+  bottom: 0.25em;
+  background-color: #fff;
+  filter: drop-shadow(2px 1px 6px rgba(0, 0, 0, 0.25));
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: rgb(34, 182, 34);
+  border: 1px solid rgb(34, 182, 34);
+}
+
+input:focus + .slider {
+  box-shadow: 0px 6px 8px 3px rgba(0, 0, 0, 0.1) inset;
+}
+
+input:checked + .slider:before {
+  transform: translateX(1.4em);
+  background-color: #fff;
+  filter: drop-shadow(2px 1px 6px rgba(0, 0, 0, 0.25));
+}
+
+/* switch styling end */
+
+.gridTopSection {
+  /* border: 1px solid black; */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px;
+  background-color: white;
+  border-radius: 8px 8px 0 0;
+}
+.gridTopSection h1 {
+  font-size: 20px;
+  font-weight: 600;
+}
+.gridTopSectionBtns {
+  /* border: 1px solid black; */
+  display: flex;
+  gap: 16px;
+}
+/* ag grid styles start */
+.ag-root-wrapper {
+  border-radius: 0 0 8px 8px;
+  border: none !important;
+}
+.ag-header {
+  /* border: 1px solid black; */
+  background-color: #f8f9f9 !important;
+}
+.ag-header-cell-label {
+  font-family: "Public Sans", sans-serif !important;
+  font-weight: 700;
+}
+
+.ag-cell {
+  font-family: "Public Sans", sans-serif !important;
+  font-size: 14px;
+}
+/* ag grid styles end */
+/* modal styling start */
+.modalInputs,
+.thresholdModalInputs {
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 16px;
+}
+.modalInput {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.modalInput input:focus,
+.thresholdModalInput input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border: 1px solid #0d5e36;
+}
+.modalInput select:focus,
+.thresholdModalInput select:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border: 1px solid #0d5e36;
+}
+.modal-footer,
+.thresholdModalFooter {
+  display: flex !important;
+  justify-content: space-between !important;
+  /* border: 1px solid black !important; */
+  padding: 16px 28px !important;
+}
+.modal-footer button,
+.thresholdModalFooter button {
+  min-width: 100px !important;
+}
+
+.thresholdModalInputContainer {
+  display: flex;
+  flex-direction: column;
+}
+.thresholdModalInputGroup {
+  display: flex;
+  gap: 16px;
+}
+
+/* Hide the default checkbox */
+input[type="checkbox"].form-check-input {
+  appearance: none;
+  -webkit-appearance: none; /* For older WebKit browsers */
+  position: relative;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #0d5e36; /* Border color */
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Checked state */
+input[type="checkbox"].form-check-input:checked {
+  background-color: #0d5e36; /* Checkbox fill color */
+}
+
+/* Checkmark */
+input[type="checkbox"].form-check-input:checked::before {
+  content: "✔";
+  position: absolute;
+  left: 3px;
+  top: -1px;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+#modulesCheckbox {
+  /* border: 1px solid black; */
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+/* modal styling end */

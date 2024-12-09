@@ -163,6 +163,9 @@ async function handleFormSubmit(event) {
       index: index + 1,
       device_log_date: formatDate(item.device_log_date),
     }));
+    if (formattedData.length === 0) {
+      triggerToast("No Alerts Found", "error");
+    }
     gridApi.setGridOption("rowData", formattedData);
   } catch (error) {
     console.error("Error fetching customer data:", error);
