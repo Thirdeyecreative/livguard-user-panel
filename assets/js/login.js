@@ -18,6 +18,7 @@ document
         if (data.errFlag == 0) {
           localStorage.setItem("authToken", data.token);
           localStorage.setItem("customerId", data.customer_id);
+          localStorage.setItem("moduleList", data.modulePermitted);
           window.location.href = "dashboard.html";
         } else {
           alert(data.message);

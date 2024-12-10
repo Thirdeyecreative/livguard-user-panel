@@ -55,6 +55,7 @@
         color: #626c70 !important;
         display: flex;
         gap: 7px;
+        display: none; /* Hide all links by default */
       }
       .nav-link:hover {
         color: #0d5e36 !important;
@@ -199,6 +200,7 @@
   </body>
 </html>
 <script src="./assets/js/ota.js"></script>
+<script src="./assets/js/module_permission.js"></script>
 <script>
   document.getElementById("logoutBtn").addEventListener("click", function () {
     localStorage.removeItem("authToken");
