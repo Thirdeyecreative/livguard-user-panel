@@ -386,8 +386,7 @@ const gridOptions = {
     },
     {
       headerName: "Status",
-      field: "status",
-      filter: false,
+      field: "deviceId",
       sortable: true, // Enable sorting
       maxWidth: 100,
       cellRenderer: (params) => {
@@ -476,6 +475,52 @@ const gridOptions = {
         };
 
         return getStatusRank(nodeA) - getStatusRank(nodeB);
+      },
+      filterParams: {
+        values: ["Online", "Offline"], // Set the filter options manually
+        comparator: (filterValue, cellValue) => {
+          // Compare filter values with computed cell values
+          return filterValue === cellValue ? 0 : -1;
+        },
+      },
+      filterValueGetter: (params) => {
+        const deviceLogDate = params.data.deviceLogDate;
+        const logTime = params.data.time;
+
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth() + 1;
+        const currentDay = currentDate.getDate();
+        const currentHours = currentDate.getHours();
+        const currentMinutes = currentDate.getMinutes();
+
+        const [logDay, logMonth, logYear] = deviceLogDate
+          .split("/")
+          .map(Number);
+        const [logHours, logMinutes] = logTime.split(":").map(Number);
+
+        if (
+          logYear < currentYear ||
+          (logYear === currentYear && logMonth < currentMonth) ||
+          (logYear === currentYear &&
+            logMonth === currentMonth &&
+            logDay < currentDay)
+        ) {
+          return "Offline";
+        } else if (
+          logYear === currentYear &&
+          logMonth === currentMonth &&
+          logDay === currentDay
+        ) {
+          const timeDifference =
+            (currentHours - logHours) * 60 + (currentMinutes - logMinutes);
+
+          if (timeDifference >= 5) {
+            return "Offline";
+          }
+        }
+
+        return "Online";
       },
     },
     {
