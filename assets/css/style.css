@@ -1508,7 +1508,7 @@ input[type="color"]:focus,
 }
 .paginationContainer{
   border: 1px solid lightgray;
-  background-color: #ecfff6;
+  background-color: #f8f9f9;
   padding: 12px 24px;
   border-radius: 8px;
   display: flex;
