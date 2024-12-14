@@ -960,6 +960,8 @@
     <!-- ag-chart start -->
     <script>
       // Function to fetch data from the API
+      const pageSizeInput = document.getElementById("pageSizeInput");
+
       async function fetchData() {
         const deviceId = localStorage.getItem("selectedDeviceId");
         const authToken = localStorage.getItem("authToken");
@@ -1288,6 +1290,8 @@
         totalData = await fetchData();
         console.log({ totalData });
         currentPage = Math.ceil(totalData.length / pageSize) - 1;
+        pageSizeInput.setAttribute("max", totalData.length);
+
         updateCharts();
         updatePaginationButtons();
       }
@@ -1309,8 +1313,6 @@
         }
       });
 
-      const pageSizeInput = document.getElementById("pageSizeInput");
-      pageSizeInput.setAttribute("max", totalData.length);
       pageSizeInput.addEventListener("change", (event) => {
         const newSize = parseInt(event.target.value, 10);
         if (newSize > 0) {
@@ -1321,6 +1323,12 @@
         }
         if (newSize > totalData.length) {
           pageSizeInput.value = totalData.length;
+        } else if (newSize < 10) {
+          pageSizeInput.value = 10;
+          pageSize = 10;
+          currentPage = Math.ceil(totalData.length / pageSize) - 1;
+          updateCharts();
+          updatePaginationButtons();
         }
       });
 
