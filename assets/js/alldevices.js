@@ -673,7 +673,7 @@ const gridOptions = {
             return response.json();
           })
           .then((result) => {
-            console.log({ result });
+            // console.log({ result });
 
             // Once we get the data, update the cell content
             cellDiv.innerHTML = `${result[0].distance_in_kms.toFixed(2)} km`;

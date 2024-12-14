@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         (module) =>
           allowedModules.includes(module.id) && module.file_name === fileName
       );
-      console.log({ isAllowed, fileName: fileName === "index.html" });
+      // console.log({ isAllowed, fileName: fileName === "index.html" });
       const parentNavItem = link.closest(".nav-item");
       if (isAllowed || fileName === "index.html") {
         // If the link is allowed, display it
