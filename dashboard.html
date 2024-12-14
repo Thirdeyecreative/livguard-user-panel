@@ -737,6 +737,25 @@
             ></div>
 
             <div class="agChartGraphsContainer">
+              <div class="paginationContainer">
+                <button class="btn btn-outline-primary" id="prevPage">
+                  Prev
+                </button>
+                <div>
+                  <label for="pageSizeInput" hidden></label>
+                  <input
+                    class="form-control"
+                    type="number"
+                    id="pageSizeInput"
+                    value="60"
+                    min="10"
+                    step="10"
+                  />
+                </div>
+                <button class="btn btn-outline-primary" id="nextPage">
+                  Next
+                </button>
+              </div>
               <div class="chartConatiner">
                 <button class="refreshChart btn btn-outline-secondary btn-sm">
                   <i class="bi bi-arrow-clockwise"></i>
@@ -1110,37 +1129,51 @@
       }
 
       // Function to update the charts with new data
+      let pageSize = 60; // Default page size
+      let totalData = []; // To store the complete data array
+      // console.log({ totalData });
+      let currentPage = Math.ceil(totalData.length / pageSize); // Current page index should be eqral to last page
+
+      function getPaginatedData() {
+        const startIndex = currentPage * pageSize;
+        return totalData.slice(startIndex, startIndex + pageSize);
+      }
+
+      function updatePaginationButtons() {
+        const totalPages = Math.ceil(totalData.length / pageSize);
+        document.getElementById("prevPage").disabled = currentPage <= 0;
+        document.getElementById("nextPage").disabled =
+          currentPage >= totalPages - 1;
+      }
+
       async function updateCharts() {
         document.getElementById("batteryVoltageChart").innerHTML = "";
         document.getElementById("currentChart").innerHTML = "";
         document.getElementById("bankVoltageChart").innerHTML = "";
 
-        const data = await fetchData();
-        const totalDataPoints = data.length;
-        const dataToShow = totalDataPoints < 60 ? totalDataPoints : 60;
-        const maxValue = totalDataPoints;
-        const minValue =
-          totalDataPoints > dataToShow ? totalDataPoints - dataToShow : 0;
+        const paginatedData = getPaginatedData();
 
-        if (data.length === 0) {
+        if (paginatedData.length === 0) {
           console.log("No data available to display on the charts.");
+          return;
         }
 
-        // First Chart: Battery Voltages (b1, b2, b3, b4)
+        // First Chart: Battery Voltages
         const batteryVoltageOptions = {
           container: document.getElementById("batteryVoltageChart"),
           title: {
             text: "Individual Battery Voltage",
           },
-          data: data,
+          data: paginatedData,
           series: [
             {
               type: "line",
               xKey: "log_time",
               yKey: "b1",
               yName: "b1",
-              stroke: "ARGB(255, 93, 73, 242)",
+              stroke: "#5D49F2",
               interpolation: { type: "smooth" },
+              marker: { enabled: false },
             },
             {
               type: "line",
@@ -1149,22 +1182,25 @@
               yName: "b2",
               stroke: "#438A3F",
               interpolation: { type: "smooth" },
+              marker: { enabled: false },
             },
             {
               type: "line",
               xKey: "log_time",
               yKey: "b3",
               yName: "b3",
-              stroke: "RGB(255, 244, 26, 26)",
+              stroke: "#F41A1A",
               interpolation: { type: "smooth" },
+              marker: { enabled: false },
             },
             {
               type: "line",
               xKey: "log_time",
               yKey: "b4",
               yName: "b4",
-              stroke: "AARGB(255, 205, 138, 5)",
+              stroke: "#CD8A05",
               interpolation: { type: "smooth" },
+              marker: { enabled: false },
             },
           ],
           axes: [
@@ -1179,43 +1215,15 @@
               title: { text: "Voltage (V)" },
             },
           ],
-          navigator: {
-            enabled: true,
-            height: 40,
-            min: minValue / totalDataPoints,
-            max: maxValue / totalDataPoints,
-            mask: {
-              fill: "#0d5e36",
-              stroke: "#0d5e36",
-            },
-            minHandle: {
-              fill: "#0d5e36",
-              stroke: "#0d5e36",
-              width: 10,
-              height: 20,
-            },
-            maxHandle: {
-              fill: "#0d5e36",
-              stroke: "#0d5e36",
-              width: 10,
-              height: 20,
-            },
-          },
-          interactions: {
-            tooltip: {
-              enabled: true,
-            },
-          },
+          // interactions: { tooltip: { enabled: true } },
         };
         agCharts.AgCharts.create(batteryVoltageOptions);
 
         // Second Chart: Current
         const currentOptions = {
           container: document.getElementById("currentChart"),
-          title: {
-            text: "Current",
-          },
-          data: data,
+          title: { text: "Current" },
+          data: paginatedData,
           series: [
             {
               type: "line",
@@ -1224,6 +1232,7 @@
               yName: "Current (A)",
               stroke: "#438A3F",
               interpolation: { type: "smooth" },
+              marker: { enabled: false },
             },
           ],
           axes: [
@@ -1238,43 +1247,15 @@
               title: { text: "Current (A)" },
             },
           ],
-          navigator: {
-            enabled: true,
-            height: 40,
-            min: minValue / totalDataPoints,
-            max: maxValue / totalDataPoints,
-            mask: {
-              fill: "#0d5e36",
-              stroke: "#0d5e36",
-            },
-            minHandle: {
-              fill: "#0d5e36",
-              stroke: "#0d5e36",
-              width: 10,
-              height: 20,
-            },
-            maxHandle: {
-              fill: "#0d5e36",
-              stroke: "#0d5e36",
-              width: 10,
-              height: 20,
-            },
-          },
-          interactions: {
-            tooltip: {
-              enabled: true,
-            },
-          },
+          // interactions: { tooltip: { enabled: true } },
         };
         agCharts.AgCharts.create(currentOptions);
 
-        // Third Chart: Bank Voltage (Sum of b1, b2, b3, b4)
+        // Third Chart: Bank Voltage
         const bankVoltageOptions = {
           container: document.getElementById("bankVoltageChart"),
-          title: {
-            text: "Bank Voltage",
-          },
-          data: data,
+          title: { text: "Bank Voltage" },
+          data: paginatedData,
           series: [
             {
               type: "line",
@@ -1283,6 +1264,7 @@
               yName: "Bank Voltage",
               stroke: "#233105",
               interpolation: { type: "smooth" },
+              marker: { enabled: false },
             },
           ],
           axes: [
@@ -1297,38 +1279,52 @@
               title: { text: "Voltage (V)" },
             },
           ],
-          navigator: {
-            enabled: true,
-            height: 40,
-            min: minValue / totalDataPoints,
-            max: maxValue / totalDataPoints,
-            mask: {
-              fill: "#0d5e36",
-              stroke: "#0d5e36",
-            },
-            minHandle: {
-              fill: "#0d5e36",
-              stroke: "#0d5e36",
-              width: 10,
-              height: 20,
-            },
-            maxHandle: {
-              fill: "#0d5e36",
-              stroke: "#0d5e36",
-              width: 10,
-              height: 20,
-            },
-          },
-          interactions: {
-            tooltip: {
-              enabled: true,
-            },
-          },
+          // interactions: { tooltip: { enabled: true } },
         };
         agCharts.AgCharts.create(bankVoltageOptions);
       }
 
-      updateCharts();
+      async function initializeChart() {
+        totalData = await fetchData();
+        console.log({ totalData });
+        currentPage = Math.ceil(totalData.length / pageSize) - 1;
+        updateCharts();
+        updatePaginationButtons();
+      }
+
+      document.getElementById("prevPage").addEventListener("click", () => {
+        if (currentPage > 0) {
+          currentPage--;
+          updateCharts();
+          updatePaginationButtons();
+        }
+      });
+
+      document.getElementById("nextPage").addEventListener("click", () => {
+        const totalPages = Math.ceil(totalData.length / pageSize);
+        if (currentPage < totalPages - 1) {
+          currentPage++;
+          updateCharts();
+          updatePaginationButtons();
+        }
+      });
+
+      const pageSizeInput = document.getElementById("pageSizeInput");
+      pageSizeInput.setAttribute("max", totalData.length);
+      pageSizeInput.addEventListener("change", (event) => {
+        const newSize = parseInt(event.target.value, 10);
+        if (newSize > 0) {
+          pageSize = newSize;
+          currentPage = Math.ceil(totalData.length / pageSize) - 1; // Reset to the first page
+          updateCharts();
+          updatePaginationButtons();
+        }
+        if (newSize > totalData.length) {
+          pageSizeInput.value = totalData.length;
+        }
+      });
+
+      initializeChart();
 
       // Refresh charts every minute
       // var graphIntervalId;
@@ -1336,7 +1332,7 @@
       let refreshButtons = document.querySelectorAll(".refreshChart");
 
       for (let i = 0; i < refreshButtons.length; i++) {
-        refreshButtons[i].addEventListener("click", updateCharts);
+        refreshButtons[i].addEventListener("click", initializeChart);
       }
     </script>
     <!-- ag-chart end -->

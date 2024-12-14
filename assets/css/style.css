@@ -1506,7 +1506,23 @@ input[type="color"]:focus,
 .nav-item:hover i {
   color: #0d5e36 !important;
 }
-
+.paginationContainer{
+  border: 1px solid lightgray;
+  background-color: #ecfff6;
+  padding: 12px 24px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: end;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  width: fit-content;
+  margin-left: auto;
+}
+.paginationContainer input{
+  width: 100px;
+}
 .chartConatiner {
   /* border: 1px solid black; */
   padding: 12px 0px;

@@ -199,11 +199,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // Handle device selection changes
-  function handleDeviceChange(event) {
+  async function handleDeviceChange(event) {
     const deviceId = event.target.value;
     localStorage.setItem("selectedDeviceId", deviceId);
     fetchData(deviceId);
-    updateCharts();
+    await initializeChart();
   }
 
   // Initialize

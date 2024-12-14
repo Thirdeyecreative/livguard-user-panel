@@ -39,7 +39,8 @@
       src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"
     ></script>
     <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.js"></script>
-
+    <!-- ag-grid -->
+    <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
     <style>
       body {
         background-color: #f8f9fa;
@@ -346,6 +347,27 @@
         border-radius: 4px;
         padding: 0 8px;
       }
+
+      /* ag grid styles start */
+      .ag-root-wrapper {
+        border-radius: 0 0 8px 8px;
+        border: none !important;
+        border-top: 1px solid #ddd !important;
+      }
+      .ag-header {
+        /* border: 1px solid black; */
+        background-color: #f8f9f9 !important;
+      }
+      .ag-header-cell-label {
+        font-family: "Public Sans", sans-serif !important;
+        font-weight: 700;
+      }
+
+      .ag-cell {
+        font-family: "Public Sans", sans-serif !important;
+        font-size: 14px;
+      }
+      /* ag grid styles end */
     </style>
   </head>
 
@@ -646,15 +668,12 @@
                 "
               >
                 <!--TABLE-->
-                <table class="table tbl_mb table_tal">
+                <!-- <table class="table tbl_mb table_tal">
                   <thead class="tbl_h1">
                     <tr>
-                      <!--<th class="tbl_h_bg tbl_th_by">Vendore Name</th> -->
                       <th class="tbl_h_bg tbl_th_by">Device</th>
                       <th class="tbl_h_bg tbl_th_by">Status</th>
                       <th class="tbl_h_bg tbl_th_by">Alert</th>
-                      <!-- <th class="tbl_h_bg tbl_th_by">Alert</th> -->
-                      <!-- <th class="tbl_h_bg tbl_th_by">BV</th> -->
                       <th class="tbl_h_bg tbl_th_by">B1</th>
                       <th class="tbl_h_bg tbl_th_by">B2</th>
                       <th class="tbl_h_bg tbl_th_by">B3</th>
@@ -666,179 +685,17 @@
                       <th class="tbl_h_bg tbl_th_by">Inst Speed</th>
                       <th class="tbl_h_bg tbl_th_by">Date/Time</th>
                       <th class="tbl_h_bg tbl_th_by">Location</th>
-                      <!-- <th class="tbl_h_bg tbl_th_by">Set Threshold</th> -->
                       <th class="tbl_h_bg tbl_th_by">Action</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <!-- Add table rows here -->
-                    <!-- <tr>
-                    <td>Vendor Name</td>
-                    <td>M4</td>
-                    <td>
-                      <div class="color_box" style="background-color: #00B562;">
-                        <p>Online</p>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="container round_container m-0 p-0" style="background-color: #00B562;">
-                      </div>
-                    </td>
-                    <td>49.47</td>
-                    <td>13.03</td>
-                    <td>12.72</td>
-                    <td>12.92</td>
-                    <td>12.73</td>
-                    <td>0.01</td>
-                    <td>55.70</td>
-                    <td>33.70</td>
-                    <td>
-                      <button class="btn btn_local_style">View</button>
-                    </td>
-                    <td>
-                      23/12/2024 <br />
-                      6:30 PM
-                    </td>
-                    <td>
-                      <button class="icon_button"><i style="color: #626C70;" class="bi bi-eye-fill"></i></button>
-                      <button class="icon_button"><i style="color: #626C70;" class="bi bi-download"></i></button>
-                    </td>
-                  </tr> -->
-                    <!-- <tr>
-                    <td>Vendor Name</td>
-                    <td>M4</td>
-                    <td>
-                      <div class="color_box" style="background-color: #00B562;">
-                        <p>Online</p>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="container round_container m-0 p-0" style="background-color: #00B562;">
-                      </div>
-                    </td>
-                    <td>49.47</td>
-                    <td>13.03</td>
-                    <td>12.72</td>
-                    <td>12.92</td>
-                    <td>12.73</td>
-                    <td>0.01</td>
-                    <td>55.70</td>
-                    <td>33.70</td>
-                    <td>
-                      <button class="btn btn_local_style">View</button>
-                    </td>
-                    <td>
-                      23/12/2024 <br />
-                      6:30 PM
-                    </td>
-                    <td>
-                      <button class="btn icon_button"><i style="color: #626C70;" class="bi bi-eye-fill"></i></button>
-                      <button class="btn icon_button"><i style="color: #626C70;" class="bi bi-download"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Vendor Name</td>
-                    <td>M4</td>
-                    <td>
-                      <div class="color_box" style="background-color: #626C70;">
-                        <p>Offline</p>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="container round_container m-0 p-0" style="background-color: #626C70;">
-                      </div>
-                    </td>
-                    <td>49.47</td>
-                    <td>13.03</td>
-                    <td>12.72</td>
-                    <td>12.92</td>
-                    <td>12.73</td>
-                    <td>0.01</td>
-                    <td>55.70</td>
-                    <td>33.70</td>
-                    <td>
-                      <button class="btn btn_local_style">View</button>
-                    </td>
-                    <td>
-                      23/12/2024 <br />
-                      6:30 PM
-                    </td>
-                    <td>
-                      <button class="icon_button"><i style="color: #626C70;" class="bi bi-eye-fill"></i></button>
-                      <button class="icon_button"><i style="color: #626C70;" class="bi bi-download"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Vendor Name</td>
-                    <td>M4</td>
-                    <td>
-                      <div class="color_box" style="background-color: #2E89FD;">
-                        <p>Completed</p>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="container round_container m-0 p-0" style="background-color: #2E89FD;">
-                      </div>
-                    </td>
-                    <td>49.47</td>
-                    <td>13.03</td>
-                    <td>12.72</td>
-                    <td>12.92</td>
-                    <td>12.73</td>
-                    <td>0.01</td>
-                    <td>55.70</td>
-                    <td>33.70</td>
-                    <td>
-                      <button class="btn btn_local_style"
-                        onclick="return window.location.href = 'dashboard2.html'">View</button>
-                    </td>
-                    <td>
-                      23/12/2024 <br />
-                      6:30 PM
-                    </td>
-                    <td>
-                      <button class="icon_button"><i style="color: #626C70;" class="bi bi-eye-fill"></i></button>
-                      <button class="icon_button"><i style="color: #626C70;" class="bi bi-download"></i></button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Vendor Name</td>
-                    <td>M4</td>
-                    <td>
-                      <div class="color_box" style="background-color: #626C70;">
-                        <p>Offline</p>
-                      </div>
-                    </td>
-                    <td>
-                      <div class="container round_container m-0 p-0" style="background-color: #00B562;">
-                      </div>
-                    </td>
-                    <td>49.47</td>
-                    <td>13.03</td>
-                    <td>12.72</td>
-                    <td>12.92</td>
-                    <td>12.73</td>
-                    <td>0.01</td>
-                    <td>55.70</td>
-                    <td>33.70</td>
-                    <td>
-                      <button class="btn btn_local_style">View</button>
-                    </td>
-                    <td>
-                      23/12/2024 <br />
-                      6:30 PM
-                    </td>
-                    <td>
-                      <button class="icon_button"><i style="color: #626C70;" class="bi bi-eye-fill"></i></button>
-                      <button class="icon_button" data-bs-toggle="modal" data-bs-target="#exampleModal"><i
-                          style="color: #626C70;" class="bi bi-download"></i></button>
-                    </td>
-                  </tr> -->
-
-                    <!-- Add more rows as needed -->
-                  </tbody>
-                </table>
+                  <tbody></tbody>
+                </table> -->
                 <!--TABLE-->
+                <div
+                  id="myGrid"
+                  class="ag-theme-quartz"
+                  style="width: 100%"
+                ></div>
               </div>
             </div>
           </div>
