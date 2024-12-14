@@ -1137,8 +1137,13 @@
       let currentPage = Math.ceil(totalData.length / pageSize); // Current page index should be eqral to last page
 
       function getPaginatedData() {
-        const startIndex = currentPage * pageSize;
-        return totalData.slice(startIndex, startIndex + pageSize);
+        const endIndex =
+          totalData.length -
+          (Math.ceil(totalData.length / pageSize) - currentPage - 1) * pageSize; // Calculate the end index
+        const startIndex = Math.max(0, endIndex - pageSize); // Ensure the start index is not negative
+        console.log({ startIndex, endIndex });
+
+        return totalData.slice(startIndex, endIndex); // Return the sliced data
       }
 
       function updatePaginationButtons() {
@@ -1323,6 +1328,10 @@
         }
         if (newSize > totalData.length) {
           pageSizeInput.value = totalData.length;
+          pageSize = totalData.length;
+          currentPage = Math.ceil(totalData.length / pageSize) - 1;
+          updateCharts();
+          updatePaginationButtons();
         } else if (newSize < 10) {
           pageSizeInput.value = 10;
           pageSize = 10;
