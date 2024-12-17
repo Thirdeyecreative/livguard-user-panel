@@ -6,7 +6,10 @@ document
     const formData = new FormData();
     formData.append("email", document.getElementById("inputEmail").value);
     formData.append("password", document.getElementById("inputPassword").value);
-    console.log({ formData });
+    // console.log({
+    //   email: document.getElementById("inputEmail").value,
+    //   password: document.getElementById("inputPassword").value,
+    // });
 
     fetch("https://lgdms.livguard.com/appusers", {
       method: "POST",
@@ -21,11 +24,13 @@ document
           localStorage.setItem("moduleList", data.modulePermitted);
           window.location.href = "dashboard.html";
         } else {
-          alert(data.message);
+          // alert(data.message);
+          triggerToast(data.message, "error");
         }
       })
       .catch((error) => {
-        console.error("Error:", error);
+        console.error("Error:", error.message);
+        triggerToast("Cannot login, Please contact administrator.", "error");
       });
   });
 
@@ -43,3 +48,23 @@ togglePassword.addEventListener("click", function () {
 });
 
 // togglePassword
+
+function triggerToast(message, type = "error") {
+  const toastElement = document.getElementById("toastNotification");
+  const toastMessageElement = document.getElementById("toastMessage");
+
+  // Set the message text
+  toastMessageElement.textContent = message;
+
+  // Remove any existing background class and add the appropriate one
+  toastElement.classList.remove("bg-danger", "bg-success");
+  if (type === "success") {
+    toastElement.classList.add("bg-success");
+  } else {
+    toastElement.classList.add("bg-danger");
+  }
+
+  // Show the toast
+  const toast = new bootstrap.Toast(toastElement);
+  toast.show();
+}
