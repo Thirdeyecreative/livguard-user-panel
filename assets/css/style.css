@@ -1509,7 +1509,7 @@ input[type="color"]:focus,
 .paginationContainer{
   border: 1px solid lightgray;
   background-color: #f8f9f9;
-  padding: 12px 24px;
+  padding: 12px;
   border-radius: 8px;
   display: flex;
   justify-content: end;
