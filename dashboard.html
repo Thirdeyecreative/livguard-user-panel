@@ -1085,49 +1085,60 @@
       function processApiData(apiData) {
         return apiData
           .map((entry) => {
-            // Calculate bank voltage as the sum of b1, b2, b3, and b4
-            const bankVoltage =
-              parseFloat(entry.b1) +
-              parseFloat(entry.b2) +
-              parseFloat(entry.b3) +
-              parseFloat(entry.b4);
+            try {
+              // Calculate bank voltage as the sum of b1, b2, b3, and b4
+              const bankVoltage =
+                parseFloat(entry.b1) +
+                parseFloat(entry.b2) +
+                parseFloat(entry.b3) +
+                parseFloat(entry.b4);
 
-            // Extract log_date and log_time separately
-            const logDate = new Date(entry.log_date);
-            const logTimeParts = entry.log_time.split(":");
+              // Format log_date to "YYYY-MM-DD" format
+              const logDate = new Date(entry.log_date);
+              const year = logDate.getUTCFullYear();
+              const month = String(logDate.getUTCMonth() + 1).padStart(2, "0");
+              const day = String(logDate.getUTCDate()).padStart(2, "0");
 
-            // Construct a valid date string in ISO format
-            // Assuming log_time is in HH:mm:ss format
-            logDate.setHours(logTimeParts[0], logTimeParts[1], logTimeParts[2]);
+              // Combine log_date and log_time into an ISO 8601 format string
+              const fullDateTimeStr = `${year}-${month}-${day}T${entry.log_time}`;
 
-            // Check if the date is valid
-            if (isNaN(logDate.getTime())) {
-              console.error(
-                "Invalid date:",
-                entry.log_date + " " + entry.log_time
-              );
-              return null; // or handle it according to your logic
+              // Create a Date object with the combined date and time
+              const fullDateTime = new Date(fullDateTimeStr);
+
+              // Check if the combined date and time is valid
+              if (isNaN(fullDateTime.getTime())) {
+                console.error(
+                  "Invalid date and time:",
+                  entry.log_date,
+                  entry.log_time
+                );
+                return null; // Skip this entry if invalid
+              }
+
+              // Format time to hh:mm:ss AM/PM
+              const formattedTime = fullDateTime.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true,
+              });
+
+              return {
+                full_date_time: fullDateTime, // For unique filtering or sorting
+                log_time: formattedTime, // For display purposes
+                b1: parseFloat(entry.b1),
+                b2: parseFloat(entry.b2),
+                b3: parseFloat(entry.b3),
+                b4: parseFloat(entry.b4),
+                current: parseFloat(entry.current),
+                bank_voltage: parseFloat(bankVoltage.toFixed(2)),
+              };
+            } catch (error) {
+              console.error("Error processing entry:", entry, error);
+              return null; // Skip entry on error
             }
-
-            // Format the time to desired format (hh:mm:ss AM/PM)
-            const logTime = logDate.toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit",
-              hour12: true,
-            });
-
-            return {
-              log_time: logTime,
-              b1: parseFloat(entry.b1),
-              b2: parseFloat(entry.b2),
-              b3: parseFloat(entry.b3),
-              b4: parseFloat(entry.b4),
-              current: parseFloat(entry.current),
-              bank_voltage: parseFloat(bankVoltage.toFixed(2)),
-            };
           })
-          .filter((entry) => entry !== null); // Remove any null entries from the array
+          .filter((entry) => entry !== null); // Remove invalid entries
       }
 
       // Function to update the charts with new data
@@ -1162,7 +1173,7 @@
 
         if (paginatedData.length === 0) {
           console.log("No data available to display on the charts.");
-          return;
+          // return;
         }
 
         // First Chart: Battery Voltages
@@ -1175,7 +1186,8 @@
           series: [
             {
               type: "line",
-              xKey: "log_time",
+              xKey: "full_date_time", // Use full_date_time for unique values
+              xName: "Date & Time", // Tooltip shows both date and time
               yKey: "b1",
               yName: "b1",
               stroke: "#5D49F2",
@@ -1184,7 +1196,8 @@
             },
             {
               type: "line",
-              xKey: "log_time",
+              xKey: "full_date_time", // Use full_date_time for unique values
+              xName: "Date & Time", // Tooltip shows both date and time
               yKey: "b2",
               yName: "b2",
               stroke: "#438A3F",
@@ -1193,7 +1206,8 @@
             },
             {
               type: "line",
-              xKey: "log_time",
+              xKey: "full_date_time", // Use full_date_time for unique values
+              xName: "Date & Time", // Tooltip shows both date and time
               yKey: "b3",
               yName: "b3",
               stroke: "#F41A1A",
@@ -1202,7 +1216,8 @@
             },
             {
               type: "line",
-              xKey: "log_time",
+              xKey: "full_date_time", // Use full_date_time for unique values
+              xName: "Date & Time", // Tooltip shows both date and time
               yKey: "b4",
               yName: "b4",
               stroke: "#CD8A05",
@@ -1212,9 +1227,21 @@
           ],
           axes: [
             {
-              type: "category",
+              type: "time", // Use a time axis to support full_date_time
               position: "bottom",
               title: { text: "Time (hh:mm:ss)" },
+              label: {
+                formatter: (params) => {
+                  // Format axis labels to show only time
+                  const date = new Date(params.value);
+                  return date.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                  });
+                },
+                rotation: -30,
+              },
             },
             {
               type: "number",
@@ -1222,7 +1249,6 @@
               title: { text: "Voltage (V)" },
             },
           ],
-          // interactions: { tooltip: { enabled: true } },
         };
         agCharts.AgCharts.create(batteryVoltageOptions);
 
@@ -1230,11 +1256,12 @@
         const currentOptions = {
           container: document.getElementById("currentChart"),
           title: { text: "Current" },
-          data: paginatedData,
+          data: paginatedData, // Use the processed data
           series: [
             {
               type: "line",
-              xKey: "log_time",
+              xKey: "full_date_time", // Use full_date_time for unique values
+              xName: "Date & Time", // Tooltip shows both date and time
               yKey: "current",
               yName: "Current (A)",
               stroke: "#438A3F",
@@ -1244,9 +1271,21 @@
           ],
           axes: [
             {
-              type: "category",
+              type: "time", // Use a time axis to support full_date_time
               position: "bottom",
               title: { text: "Time (hh:mm:ss)" },
+              label: {
+                formatter: (params) => {
+                  // Format axis labels to show only time
+                  const date = new Date(params.value);
+                  return date.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                  });
+                },
+                rotation: -30,
+              },
             },
             {
               type: "number",
@@ -1254,7 +1293,6 @@
               title: { text: "Current (A)" },
             },
           ],
-          // interactions: { tooltip: { enabled: true } },
         };
         agCharts.AgCharts.create(currentOptions);
 
@@ -1266,7 +1304,8 @@
           series: [
             {
               type: "line",
-              xKey: "log_time",
+              xKey: "full_date_time", // Use full_date_time for unique values
+              xName: "Date & Time", // Tooltip shows both date and time
               yKey: "bank_voltage",
               yName: "Bank Voltage",
               stroke: "#233105",
@@ -1276,9 +1315,21 @@
           ],
           axes: [
             {
-              type: "category",
+              type: "time", // Use a time axis to support full_date_time
               position: "bottom",
               title: { text: "Time (hh:mm:ss)" },
+              label: {
+                formatter: (params) => {
+                  // Format axis labels to show only time
+                  const date = new Date(params.value);
+                  return date.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                  });
+                },
+                rotation: -30,
+              },
             },
             {
               type: "number",
@@ -1286,7 +1337,6 @@
               title: { text: "Voltage (V)" },
             },
           ],
-          // interactions: { tooltip: { enabled: true } },
         };
         agCharts.AgCharts.create(bankVoltageOptions);
       }
