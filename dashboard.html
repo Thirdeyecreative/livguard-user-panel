@@ -684,7 +684,7 @@
                 <div class="col-lg-3">
                   <div class="d-flex dsh_crd_bg align-items-center">
                     <div class="">
-                      <h5 class="ds_crd_p1">DISTANCE (KM)</h5>
+                      <h5 class="ds_crd_p1">KM driven today</h5>
                       <h6 class="ds_crd_h6" id="distance"></h6>
                     </div>
                     <div
@@ -707,7 +707,7 @@
                   <div class="d-flex dsh_crd_bg align-items-center">
                     <div class="">
                       <h5 class="ds_crd_p1">Version</h5>
-                      <h6 class="ds_crd_h6" id="version">v1.0.0</h6>
+                      <h6 class="ds_crd_h6" id="version"></h6>
                     </div>
                     <div
                       style="
@@ -820,10 +820,10 @@
                     AH <br />
                     Out
                   </th>
-                  <th>V1</th>
-                  <th>V2</th>
-                  <th>V3</th>
-                  <th>V4</th>
+                  <th>B1</th>
+                  <th>B2</th>
+                  <th>B3</th>
+                  <th>B4</th>
                   <th>Amps - Max</th>
                   <th>Amps - Min</th>
                   <th>Bank Voltage</th>
@@ -982,66 +982,6 @@
           const result = await response.json();
           const dummy = [
             {
-              b1: "12.68",
-              b2: "12.63",
-              b3: "12.61",
-              b4: "12.56",
-              charging_ah: "0.0",
-              current: "-2.46",
-              discharging_ah: "0.0312",
-              lat: "2815.2829",
-              log_date: "Mon, 21 Oct 2024 00:00:00 GMT",
-              log_time: "16:48:13",
-              long: "7751.015",
-              row_num: 194,
-              temperature: "37",
-            },
-            {
-              b1: "12.65",
-              b2: "12.60",
-              b3: "12.57",
-              b4: "12.52",
-              charging_ah: "0.0",
-              current: "-0.98",
-              discharging_ah: "0.2168",
-              lat: "2815.3472",
-              log_date: "Mon, 21 Oct 2024 00:00:00 GMT",
-              log_time: "16:49:12",
-              long: "7751.0513",
-              row_num: 195,
-              temperature: "37",
-            },
-            {
-              b1: "12.63",
-              b2: "12.54",
-              b3: "12.55",
-              b4: "12.48",
-              charging_ah: "0.0",
-              current: "-0.69",
-              discharging_ah: "0.2781",
-              lat: "2815.4106",
-              log_date: "Mon, 21 Oct 2024 00:00:00 GMT",
-              log_time: "16:50:13",
-              long: "7751.1003",
-              row_num: 196,
-              temperature: "37",
-            },
-            {
-              b1: "11.52",
-              b2: "11.89",
-              b3: "11.69",
-              b4: "11.93",
-              charging_ah: "0.0",
-              current: "-54.52",
-              discharging_ah: "0.2559",
-              lat: "2815.4883",
-              log_date: "Mon, 21 Oct 2024 00:00:00 GMT",
-              log_time: "16:51:12",
-              long: "7751.1686",
-              row_num: 197,
-              temperature: "37",
-            },
-            {
               b1: "12.61",
               b2: "12.55",
               b3: "12.54",
@@ -1073,8 +1013,11 @@
             },
           ];
           console.log({ datas: processApiData(dummy), result });
-
-          return processApiData(result);
+          // send only last 24hr data or less
+          const pageSize = 1440;
+          const lastIndex = result.length;
+          const firstIndex = Math.max(0, lastIndex - pageSize);
+          return processApiData(result.slice(firstIndex, lastIndex));
         } catch (error) {
           console.error("Error fetching data from API:", error);
           return [];
@@ -1189,7 +1132,7 @@
               xKey: "full_date_time", // Use full_date_time for unique values
               xName: "Date & Time", // Tooltip shows both date and time
               yKey: "b1",
-              yName: "b1",
+              yName: "B1",
               stroke: "#5D49F2",
               interpolation: { type: "smooth" },
               marker: { enabled: false },
@@ -1199,7 +1142,7 @@
               xKey: "full_date_time", // Use full_date_time for unique values
               xName: "Date & Time", // Tooltip shows both date and time
               yKey: "b2",
-              yName: "b2",
+              yName: "B2",
               stroke: "#438A3F",
               interpolation: { type: "smooth" },
               marker: { enabled: false },
@@ -1209,7 +1152,7 @@
               xKey: "full_date_time", // Use full_date_time for unique values
               xName: "Date & Time", // Tooltip shows both date and time
               yKey: "b3",
-              yName: "b3",
+              yName: "B3",
               stroke: "#F41A1A",
               interpolation: { type: "smooth" },
               marker: { enabled: false },
@@ -1219,7 +1162,7 @@
               xKey: "full_date_time", // Use full_date_time for unique values
               xName: "Date & Time", // Tooltip shows both date and time
               yKey: "b4",
-              yName: "b4",
+              yName: "B4",
               stroke: "#CD8A05",
               interpolation: { type: "smooth" },
               marker: { enabled: false },

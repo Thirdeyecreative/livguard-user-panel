@@ -225,19 +225,19 @@ const gridOptions = {
       minWidth: 180,
     },
     {
-      headerName: "V1",
+      headerName: "B1",
       field: "b1",
     },
     {
-      headerName: "V2",
+      headerName: "B2",
       field: "b2",
     },
     {
-      headerName: "V3",
+      headerName: "B3",
       field: "b3",
     },
     {
-      headerName: "V4",
+      headerName: "B4",
       field: "b4",
     },
     {

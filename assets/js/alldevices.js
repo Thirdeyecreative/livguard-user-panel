@@ -892,7 +892,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   }
   fetchData();
-  setInterval(fetchData, 30000);
+  setInterval(fetchData, 60000);
 });
 
 // auth check

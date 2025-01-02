@@ -190,6 +190,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     document.getElementById("current").textContent = data.current;
     document.getElementById("temperature").textContent = data.temperature;
+    document.getElementById("version").textContent = data.device_version_no;
     document.getElementById("speed").textContent =
       data.current > 5 ? 0 : data.speed;
 
@@ -220,7 +221,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (currentDeviceId) {
         fetchData(currentDeviceId);
       }
-    }, 30000);
+    }, 60000);
 
     fetchData(savedDeviceId);
   }
